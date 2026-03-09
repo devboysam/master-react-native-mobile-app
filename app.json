@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Course Learning",
+    "slug": "course-learning",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sam.courselearning"
+    }
+  }
+}
