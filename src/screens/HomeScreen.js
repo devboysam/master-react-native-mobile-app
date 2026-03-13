@@ -1,44 +1,86 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { getModules } from '../api/client';
+import { useFocusEffect } from '@react-navigation/native';
+import { getAppContent, getModules } from '../api/client';
+
+const initialContent = {
+  welcome_title: 'Welcome to Learn React',
+  welcome_description: 'Master React.js through structured modules and hands-on practice',
+  motivation_text: 'Daily Motivation',
+  motivation_quote: 'Keep up the great work!',
+};
 
 export default function HomeScreen({ navigation }) {
-  const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modules, setModules] = useState([]);
+  const [appContent, setAppContent] = useState(initialContent);
 
-  useEffect(() => {
-    getModules()
-      .then(setModules)
-      .finally(() => setLoading(false));
+  const loadData = useCallback(async () => {
+    try {
+      const [contentData, moduleData] = await Promise.all([getAppContent(), getModules()]);
+      setAppContent(contentData || initialContent);
+      setModules((moduleData || []).slice(0, 6));
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      loadData().catch(() => setLoading(false));
+    }, [loadData])
+  );
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0f766e" />
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#0ea5c6" />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Course Modules</Text>
+      <View style={styles.header}>
+        <Text style={styles.brand}>Learn React</Text>
+      </View>
+
       <FlatList
         data={modules}
         keyExtractor={(item) => String(item.id)}
         numColumns={2}
         columnWrapperStyle={styles.column}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={styles.listContent}
+        ListHeaderComponent={
+          <>
+            <View style={styles.welcomeCard}>
+              <Text style={styles.welcomeTitle}>{appContent.welcome_title}</Text>
+              <Text style={styles.welcomeDesc}>{appContent.welcome_description}</Text>
+            </View>
+
+            <Text style={styles.sectionTitle}>Daily Motivation</Text>
+            <View style={styles.motivationCard}>
+              <Text style={styles.motivationHeading}>{appContent.motivation_text}</Text>
+              <Text style={styles.motivationQuote}>{appContent.motivation_quote}</Text>
+            </View>
+
+            <View style={styles.sectionRow}>
+              <Text style={styles.sectionTitle}>Learning Modules</Text>
+              <Pressable onPress={() => navigation.navigate('Modules')}>
+                <Text style={styles.viewAll}>View all</Text>
+              </Pressable>
+            </View>
+          </>
+        }
         renderItem={({ item }) => (
           <Pressable
-            style={styles.card}
-            onPress={() => navigation.navigate('LessonsList', { moduleId: item.id, moduleTitle: item.title })}
+            style={styles.moduleCard}
+            onPress={() => navigation.navigate('Modules', { screen: 'ModuleDetails', params: { moduleId: item.id } })}
           >
-            <Text style={styles.icon}>{item.icon || 'book'}</Text>
-            <Text style={styles.moduleTitle}>{item.title}</Text>
-            <Text style={styles.description} numberOfLines={2}>
-              {item.description}
-            </Text>
+            <Text style={styles.moduleTitle} numberOfLines={2}>{item.title}</Text>
+            <Text style={styles.moduleMeta}>{item.lesson_count || 0} lessons</Text>
+            <Text style={styles.moduleMeta}>{item.total_read_time || 0} mins</Text>
           </Pressable>
         )}
       />
@@ -49,49 +91,100 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4fbf9',
-    paddingTop: 20,
-    paddingHorizontal: 14,
+    backgroundColor: '#f5f3f8',
   },
-  centered: {
+  loader: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f3f8',
   },
-  title: {
+  header: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 10,
+    backgroundColor: '#ffffff',
+  },
+  brand: {
+    fontSize: 38,
+    fontWeight: '700',
+    color: '#12131f',
+  },
+  listContent: {
+    paddingHorizontal: 18,
+    paddingTop: 14,
+    paddingBottom: 120,
+  },
+  welcomeCard: {
+    backgroundColor: '#dddae9',
+    borderRadius: 26,
+    padding: 20,
+    marginBottom: 18,
+  },
+  welcomeTitle: {
+    fontSize: 42,
+    lineHeight: 48,
+    fontWeight: '700',
+    color: '#1a1b2e',
+  },
+  welcomeDesc: {
+    marginTop: 8,
+    color: '#36384e',
+    fontSize: 23,
+    lineHeight: 30,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#12131f',
+    marginBottom: 10,
+  },
+  sectionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  viewAll: {
+    color: '#0ea5c6',
+    fontWeight: '600',
+  },
+  motivationCard: {
+    backgroundColor: '#dddae9',
+    borderRadius: 24,
+    padding: 16,
+    marginBottom: 18,
+  },
+  motivationHeading: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#134e4a',
-    marginBottom: 14,
+    color: '#1a1b2e',
+  },
+  motivationQuote: {
+    marginTop: 8,
+    color: '#32354e',
+    fontSize: 20,
+    lineHeight: 28,
   },
   column: {
     justifyContent: 'space-between',
   },
-  card: {
-    backgroundColor: '#ffffff',
+  moduleCard: {
     width: '48%',
-    borderRadius: 16,
-    padding: 14,
+    backgroundColor: '#e5e3ea',
+    borderRadius: 22,
+    padding: 16,
     marginBottom: 12,
-    minHeight: 140,
-    shadowColor: '#0f172a',
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 6 },
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  icon: {
-    fontSize: 22,
-    marginBottom: 8,
+    minHeight: 130,
   },
   moduleTitle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: '700',
-    color: '#0f172a',
+    color: '#181a2b',
   },
-  description: {
-    fontSize: 13,
-    color: '#475569',
+  moduleMeta: {
     marginTop: 8,
+    color: '#585b72',
+    fontSize: 18,
   },
 });
