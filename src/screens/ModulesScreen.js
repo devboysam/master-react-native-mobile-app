@@ -1,9 +1,17 @@
 import { useCallback, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { getModules } from '../api/client';
+import AppScreen from '../components/AppScreen';
+import { brand, softShadows } from '../theme/brand';
+import { useAppTheme } from '../theme/ThemeContext';
 
 function moduleIcon(icon) {
+  if (icon === '?') {
+    return '📚';
+  }
+
   const iconMap = {
     book: '📘',
     code: '💻',
@@ -17,6 +25,7 @@ function moduleIcon(icon) {
 }
 
 export default function ModulesScreen({ navigation }) {
+  const { theme } = useAppTheme();
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -38,48 +47,79 @@ export default function ModulesScreen({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0f766e" />
-      </View>
+      <AppScreen style={styles.centered}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      </AppScreen>
     );
   }
 
+  function openModule(moduleId) {
+    navigation.push('ModuleDetails', { moduleId });
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>All Modules</Text>
+    <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
+      <Text style={[styles.title, { color: theme.colors.text }]}>All Modules</Text>
+      <Text style={[styles.subtitle, { color: theme.colors.muted }]}>Pick a module to explore lessons</Text>
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <FlatList
         data={modules}
         keyExtractor={(item) => String(item.id)}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 124 }}
         renderItem={({ item }) => (
           <Pressable
-            style={styles.row}
-            onPress={() => navigation.navigate('ModuleDetails', { moduleId: item.id })}
+            style={({ pressed }) => [styles.row, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }, pressed && styles.rowPressed]}
+            onPress={() => openModule(item.id)}
           >
             <View style={styles.rowLeft}>
-              <Text style={styles.icon}>{moduleIcon(item.icon)}</Text>
-              <View>
-                <Text style={styles.moduleTitle}>{item.title}</Text>
-                <Text style={styles.meta}>{item.lesson_count || 0} lessons</Text>
-                <Text style={styles.meta}>{item.total_read_time || 0} min total</Text>
+              {getModuleImage(item) ? (
+                <Image source={{ uri: getModuleImage(item) }} style={styles.iconImage} resizeMode="cover" />
+              ) : (
+                <View style={styles.iconWrap}>
+                  <Text style={styles.icon}>{moduleIcon(item.icon)}</Text>
+                </View>
+              )}
+              <View style={styles.textWrap}>
+                <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
+                <View style={styles.metaRow}>
+                  <Ionicons name="book-outline" size={13} color={theme.colors.muted} />
+                  <Text style={[styles.meta, { color: theme.colors.muted }]}>{item.lesson_count || 0} lessons</Text>
+                </View>
+                <View style={styles.metaRow}>
+                  <Ionicons name="time-outline" size={13} color={theme.colors.muted} />
+                  <Text style={[styles.meta, { color: theme.colors.muted }]}>{item.total_read_time || 0} min total</Text>
+                </View>
               </View>
             </View>
-            <Text style={styles.chevron}>{'>'}</Text>
+            <Ionicons name="chevron-forward" size={20} color={theme.colors.muted} />
           </Pressable>
         )}
-        ListEmptyComponent={<Text style={styles.empty}>No modules yet. Create one from admin panel.</Text>}
+        ListEmptyComponent={<Text style={[styles.empty, { color: theme.colors.muted }]}>No modules yet. Create one from admin panel.</Text>}
       />
-    </View>
+    </AppScreen>
   );
+}
+
+function getModuleImage(item) {
+  const candidates = [item?.thumbnail_url, item?.image_url, item?.icon_url, item?.cover_image];
+  const url = candidates.find((value) => typeof value === 'string' && value.startsWith('http'));
+  if (url) {
+    return url;
+  }
+
+  if (typeof item?.icon === 'string' && item.icon.startsWith('http')) {
+    return item.icon;
+  }
+
+  return null;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4fbf9',
-    paddingTop: 20,
-    paddingHorizontal: 14,
+    backgroundColor: brand.colors.bg,
+    paddingTop: 8,
+    paddingHorizontal: 16,
   },
   centered: {
     flex: 1,
@@ -87,47 +127,77 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: brand.type.h2,
     fontWeight: '700',
-    color: '#101226',
+    color: brand.colors.text,
+  },
+  subtitle: {
+    marginTop: 4,
     marginBottom: 14,
+    color: brand.colors.muted,
   },
   error: {
     color: '#b42318',
     marginBottom: 10,
   },
   row: {
-    backgroundColor: '#f1eef5',
-    borderRadius: 16,
+    backgroundColor: '#ffffff',
+    borderRadius: brand.radius.md,
     padding: 14,
     marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: brand.colors.border,
+    ...softShadows,
+  },
+  rowPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.99 }],
   },
   rowLeft: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+    flex: 1,
+    minWidth: 0,
+  },
+  iconImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 14,
+    backgroundColor: '#dce8fd',
+  },
+  iconWrap: {
+    width: 50,
+    height: 50,
+    borderRadius: 14,
+    backgroundColor: '#eaf2ff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   icon: {
-    fontSize: 24,
+    fontSize: 22,
+  },
+  textWrap: {
+    flex: 1,
+    minWidth: 0,
   },
   moduleTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#141629',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  metaRow: {
+    marginTop: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
   },
   meta: {
-    marginTop: 4,
-    color: '#5e627c',
-  },
-  chevron: {
-    fontSize: 18,
-    color: '#595d75',
+    fontSize: 13,
   },
   empty: {
-    color: '#64748b',
     marginTop: 8,
   },
 });

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Course Learning",
+    "name": "Master React Native Course",
     "slug": "course-learning",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,6 +19,9 @@
       "eas": {
         "projectId": "02682e2d-2817-4879-a474-c392da8707ce"
       }
+    },
+    "android": {
+      "package": "com.sam.courselearning"
     }
   }
 }

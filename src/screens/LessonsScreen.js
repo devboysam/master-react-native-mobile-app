@@ -1,12 +1,19 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { getLessonsByModule, getModuleById } from '../api/client';
+import { getBookmarkedLessonIds, toggleBookmarkedLesson } from '../storage/learningState';
+import AppScreen from '../components/AppScreen';
+import { brand, softShadows } from '../theme/brand';
+import { useAppTheme } from '../theme/ThemeContext';
 
 export default function LessonsScreen({ route, navigation }) {
+  const { theme } = useAppTheme();
   const [moduleItem, setModuleItem] = useState(null);
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [bookmarkSet, setBookmarkSet] = useState(new Set());
 
   const moduleId = route.params?.moduleId;
 
@@ -29,8 +36,10 @@ export default function LessonsScreen({ route, navigation }) {
         getModuleById(moduleId),
         getLessonsByModule(moduleId),
       ]);
+      const bookmarkIds = await getBookmarkedLessonIds();
       setModuleItem(moduleData);
       setLessons(lessonData || []);
+      setBookmarkSet(new Set(bookmarkIds.map((id) => Number(id))));
     } finally {
       setLoading(false);
     }
@@ -45,89 +54,149 @@ export default function LessonsScreen({ route, navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0f766e" />
-      </View>
+      <AppScreen style={styles.centered}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      </AppScreen>
     );
   }
 
+  async function handleToggleBookmark(lessonId) {
+    const nextValue = await toggleBookmarkedLesson(lessonId);
+    setBookmarkSet((current) => {
+      const next = new Set(current);
+      if (nextValue) {
+        next.add(Number(lessonId));
+      } else {
+        next.delete(Number(lessonId));
+      }
+      return next;
+    });
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.headerWrap}>
-        <Text style={styles.title}>{moduleItem?.title || 'Module Details'}</Text>
-        <Text style={styles.subtitle}>{moduleItem?.description || 'Module overview and lessons'}</Text>
+    <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
+      <View style={styles.backRow}>
+        <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back" size={18} color={theme.colors.primaryDeep} />
+          <Text style={[styles.backLabel, { color: theme.colors.primaryDeep }]}>Back</Text>
+        </Pressable>
+      </View>
+
+      <View style={[styles.headerWrap, { borderColor: theme.colors.border }] }>
+        <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{moduleItem?.title || 'Module Details'}</Text>
+        <Text style={[styles.subtitle, { color: theme.colors.muted }]}>{moduleItem?.description || 'Module overview and lessons'}</Text>
       </View>
 
       {prerequisites.length ? (
         <>
-          <Text style={styles.sectionTitle}>Prerequisites</Text>
+          <View style={[styles.prereqHead, { backgroundColor: '#eaf8ff', borderColor: theme.colors.border }] }>
+            <Ionicons name="sparkles-outline" size={15} color={theme.colors.primary} />
+            <Text style={[styles.sectionTitle, styles.prereqTitle, { color: theme.colors.primaryDeep }]}>Prerequisites</Text>
+          </View>
           <View style={styles.bubbleWrap}>
             {prerequisites.map((item) => (
-              <View key={item} style={styles.bubble}>
-                <Text style={styles.bubbleText}>{item}</Text>
+              <View key={item} style={[styles.bubble, { backgroundColor: '#dff4ff', borderColor: '#b8e4ff' }] }>
+                <Text style={[styles.bubbleText, { color: theme.colors.primaryDeep }]}>{item}</Text>
               </View>
             ))}
           </View>
         </>
       ) : null}
 
-      <Text style={styles.sectionTitle}>Lessons</Text>
+      <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Lessons</Text>
       <FlatList
         data={lessons}
         keyExtractor={(item) => String(item.id)}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 124 }}
         renderItem={({ item }) => (
           <Pressable
-            style={styles.row}
-            onPress={() => navigation.navigate('LessonReader', { lessonId: item.id })}
+            style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+            onPress={() => navigation.push('LessonReader', { lessonId: item.id, moduleTitle: moduleItem?.title || 'React Native Module' })}
           >
-            <View>
-              <Text style={styles.lessonTitle}>{item.title}</Text>
-              <Text style={styles.meta}>{item.description || 'No description'}</Text>
-              <Text style={styles.meta}>Read time: {item.read_time} min</Text>
+            <View style={styles.lessonIconWrap}>
+              <Ionicons name="logo-react" size={18} color={theme.colors.primary} />
             </View>
-            <Text style={styles.arrow}>{`#${item.lesson_order}`}</Text>
+            <View style={styles.rowBody}>
+              <Text style={[styles.lessonTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
+              <Text style={[styles.meta, { color: theme.colors.muted }]} numberOfLines={2}>{item.description || 'No description'}</Text>
+              <View style={styles.metaInline}>
+                <Ionicons name="time-outline" size={13} color={theme.colors.muted} />
+                <Text style={[styles.meta, { color: theme.colors.muted, marginTop: 0 }]}>Read time: {item.read_time} min</Text>
+              </View>
+            </View>
+            <View style={styles.actionsColumn}>
+              <Pressable
+                hitSlop={8}
+                onPress={() => handleToggleBookmark(item.id)}
+                style={({ pressed }) => [styles.bookmarkMini, pressed && styles.bookmarkMiniPressed]}
+              >
+                <Ionicons
+                  name={bookmarkSet.has(Number(item.id)) ? 'bookmark' : 'bookmark-outline'}
+                  size={16}
+                  color={theme.colors.primaryDeep}
+                />
+              </Pressable>
+              <Text style={styles.arrow}>{`#${item.lesson_order}`}</Text>
+            </View>
           </Pressable>
         )}
-        ListEmptyComponent={<Text style={styles.meta}>No lessons for this module yet.</Text>}
+        ListEmptyComponent={<Text style={[styles.meta, { color: theme.colors.muted }]}>No lessons for this module yet.</Text>}
       />
-    </View>
+    </AppScreen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f3f8',
-    paddingHorizontal: 14,
-    paddingTop: 16,
+    backgroundColor: brand.colors.bg,
+    paddingHorizontal: 16,
+    paddingTop: 8,
   },
   centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  backRow: {
+    marginBottom: 8,
+  },
+  backBtn: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    borderRadius: 999,
+    backgroundColor: '#eaf2ff',
+  },
+  backLabel: {
+    fontWeight: '600',
+  },
   headerWrap: {
-    backgroundColor: '#d7ecf7',
-    borderRadius: 18,
+    backgroundColor: '#eaf2ff',
+    borderRadius: brand.radius.md,
     padding: 16,
     marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#d4e2fb',
   },
   title: {
-    fontSize: 28,
+    fontSize: brand.type.h2,
     fontWeight: '700',
     marginBottom: 4,
-    color: '#15172a',
+    color: brand.colors.primaryDeep,
   },
   subtitle: {
-    color: '#3f4761',
+    color: brand.colors.muted,
   },
   sectionTitle: {
-    marginTop: 4,
+    marginTop: 2,
     marginBottom: 10,
-    fontSize: 20,
+    fontSize: brand.type.h3,
     fontWeight: '700',
-    color: '#141628',
+    color: brand.colors.text,
   },
   bubbleWrap: {
     flexDirection: 'row',
@@ -135,35 +204,97 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 14,
   },
+  prereqHead: {
+    borderWidth: 1,
+    borderRadius: 999,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 10,
+  },
+  prereqTitle: {
+    marginTop: 0,
+    marginBottom: 0,
+    fontSize: 15,
+  },
   bubble: {
-    backgroundColor: '#e6e3ec',
+    backgroundColor: '#eaf2ff',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#cfe6ff',
   },
   bubbleText: {
-    color: '#3f4258',
+    color: '#3f4d77',
   },
   row: {
-    backgroundColor: '#ece9f0',
+    backgroundColor: '#ffffff',
     padding: 14,
-    borderRadius: 14,
+    borderRadius: brand.radius.md,
     marginBottom: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    borderWidth: 1,
+    borderColor: brand.colors.border,
+    ...softShadows,
+  },
+  rowPressed: {
+    opacity: 0.9,
+  },
+  rowBody: {
+    flex: 1,
+    paddingRight: 8,
+    minWidth: 0,
+  },
+  lessonIconWrap: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+    backgroundColor: '#d5f3ff',
   },
   lessonTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '600',
-    color: '#1b1e31',
+    color: brand.colors.text,
   },
   meta: {
     marginTop: 6,
-    color: '#595f79',
+    fontSize: 13,
+  },
+  metaInline: {
+    marginTop: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  actionsColumn: {
+    alignItems: 'center',
+    gap: 6,
+  },
+  bookmarkMini: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    borderColor: '#d5dff5',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#eef3ff',
+  },
+  bookmarkMiniPressed: {
+    opacity: 0.7,
   },
   arrow: {
-    fontSize: 18,
-    color: '#334155',
+    fontSize: 12,
+    color: brand.colors.muted,
+    fontWeight: '600',
   },
 });

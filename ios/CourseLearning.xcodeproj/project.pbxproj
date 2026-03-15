@@ -7,25 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01AEF928F3DC0E72A30F5628 /* libPods-CourseLearning.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B5FAA9A347F4CDD9F3C738 /* libPods-CourseLearning.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		1A114E6321A16F954BC4E3FF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B854C4058F701331D0B5FDC5 /* PrivacyInfo.xcprivacy */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
+		9F3DF153047386EECD0A3E35 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BFC44B326407E695EED7AA /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		BC7813EA13FF80AD6BEC54C6 /* libPods-CourseLearning.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 951BEEA747457CC49E2AF2FF /* libPods-CourseLearning.a */; };
-		BDFC0B90EA6F98F59BA7EB60 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 55960047C88D7FF16BC61C34 /* PrivacyInfo.xcprivacy */; };
-		D75C1C751F33940F783AAD0A /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44C2BC341CA98F07A921BF7F /* ExpoModulesProvider.swift */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00B5FAA9A347F4CDD9F3C738 /* libPods-CourseLearning.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CourseLearning.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* CourseLearning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CourseLearning.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CourseLearning/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = CourseLearning/Info.plist; sourceTree = "<group>"; };
-		44C2BC341CA98F07A921BF7F /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CourseLearning/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		55960047C88D7FF16BC61C34 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = CourseLearning/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		6F7973E1B06245180CB27501 /* Pods-CourseLearning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CourseLearning.release.xcconfig"; path = "Target Support Files/Pods-CourseLearning/Pods-CourseLearning.release.xcconfig"; sourceTree = "<group>"; };
-		951BEEA747457CC49E2AF2FF /* libPods-CourseLearning.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CourseLearning.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		988E8C7CC722B49F51725544 /* Pods-CourseLearning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CourseLearning.debug.xcconfig"; path = "Target Support Files/Pods-CourseLearning/Pods-CourseLearning.debug.xcconfig"; sourceTree = "<group>"; };
+		38BFC44B326407E695EED7AA /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-CourseLearning/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		9BEDE921029574ED5C590C80 /* Pods-CourseLearning.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CourseLearning.debug.xcconfig"; path = "Target Support Files/Pods-CourseLearning/Pods-CourseLearning.debug.xcconfig"; sourceTree = "<group>"; };
+		9E90D86E70EF51E1D054DDAC /* Pods-CourseLearning.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CourseLearning.release.xcconfig"; path = "Target Support Files/Pods-CourseLearning/Pods-CourseLearning.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = CourseLearning/SplashScreen.storyboard; sourceTree = "<group>"; };
+		B854C4058F701331D0B5FDC5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = CourseLearning/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = CourseLearning/AppDelegate.swift; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC7813EA13FF80AD6BEC54C6 /* libPods-CourseLearning.a in Frameworks */,
+				01AEF928F3DC0E72A30F5628 /* libPods-CourseLearning.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,44 +53,18 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				55960047C88D7FF16BC61C34 /* PrivacyInfo.xcprivacy */,
+				B854C4058F701331D0B5FDC5 /* PrivacyInfo.xcprivacy */,
 			);
 			name = CourseLearning;
-			sourceTree = "<group>";
-		};
-		257689E909F05C799C2AD16E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				988E8C7CC722B49F51725544 /* Pods-CourseLearning.debug.xcconfig */,
-				6F7973E1B06245180CB27501 /* Pods-CourseLearning.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				951BEEA747457CC49E2AF2FF /* libPods-CourseLearning.a */,
+				00B5FAA9A347F4CDD9F3C738 /* libPods-CourseLearning.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		4823F30478637A6A711E09E4 /* ExpoModulesProviders */ = {
-			isa = PBXGroup;
-			children = (
-				5C3405FA87CBE06BA185EC21 /* CourseLearning */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
-		5C3405FA87CBE06BA185EC21 /* CourseLearning */ = {
-			isa = PBXGroup;
-			children = (
-				44C2BC341CA98F07A921BF7F /* ExpoModulesProvider.swift */,
-			);
-			name = CourseLearning;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -107,8 +81,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				257689E909F05C799C2AD16E /* Pods */,
-				4823F30478637A6A711E09E4 /* ExpoModulesProviders */,
+				DA859180747735E022745086 /* Pods */,
+				8EA10E1595BE905758312B74 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -123,6 +97,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8EA10E1595BE905758312B74 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				AC5333C9778C0E37B5F29F55 /* CourseLearning */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		AC5333C9778C0E37B5F29F55 /* CourseLearning */ = {
+			isa = PBXGroup;
+			children = (
+				38BFC44B326407E695EED7AA /* ExpoModulesProvider.swift */,
+			);
+			name = CourseLearning;
+			sourceTree = "<group>";
+		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +120,15 @@
 			);
 			name = Supporting;
 			path = CourseLearning/Supporting;
+			sourceTree = "<group>";
+		};
+		DA859180747735E022745086 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9BEDE921029574ED5C590C80 /* Pods-CourseLearning.debug.xcconfig */,
+				9E90D86E70EF51E1D054DDAC /* Pods-CourseLearning.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,13 +139,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CourseLearning" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				8774C8B22E25A20FB1AFA4C8 /* [Expo] Configure project */,
+				88CE39A8B994C322CC5F4D0F /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				4482BE05E1476D375F615B5D /* [CP] Embed Pods Frameworks */,
+				4FBD3624E4A4C1D60DDB0E14 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +195,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				BDFC0B90EA6F98F59BA7EB60 /* PrivacyInfo.xcprivacy in Resources */,
+				1A114E6321A16F954BC4E3FF /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,7 +241,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4482BE05E1476D375F615B5D /* [CP] Embed Pods Frameworks */ = {
+		4FBD3624E4A4C1D60DDB0E14 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -292,7 +291,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CourseLearning/Pods-CourseLearning-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8774C8B22E25A20FB1AFA4C8 /* [Expo] Configure project */ = {
+		88CE39A8B994C322CC5F4D0F /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -324,7 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				D75C1C751F33940F783AAD0A /* ExpoModulesProvider.swift in Sources */,
+				9F3DF153047386EECD0A3E35 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,12 +332,13 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 988E8C7CC722B49F51725544 /* Pods-CourseLearning.debug.xcconfig */;
+			baseConfigurationReference = 9BEDE921029574ED5C590C80 /* Pods-CourseLearning.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CourseLearning/CourseLearning.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3R97HLZZQX;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -369,12 +369,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F7973E1B06245180CB27501 /* Pods-CourseLearning.release.xcconfig */;
+			baseConfigurationReference = 9E90D86E70EF51E1D054DDAC /* Pods-CourseLearning.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CourseLearning/CourseLearning.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3R97HLZZQX;
 				INFOPLIST_FILE = CourseLearning/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (

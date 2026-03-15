@@ -1,24 +1,71 @@
-import { useCallback, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Animated, Easing, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getAppContent, getModules } from '../api/client';
+import AppScreen from '../components/AppScreen';
+import { brand, softShadows } from '../theme/brand';
+import { useAppTheme } from '../theme/ThemeContext';
+
+const APP_NAME = 'Master React Native Course';
+const APP_WELCOME_TITLE = APP_NAME;
+const APP_DESCRIPTION = 'A practical React Native course app to help you master app development step by step.';
 
 const initialContent = {
-  welcome_title: 'Welcome to Learn React',
-  welcome_description: 'Master React.js through structured modules and hands-on practice',
+  welcome_title: APP_WELCOME_TITLE,
+  welcome_description: APP_DESCRIPTION,
   motivation_text: 'Daily Motivation',
   motivation_quote: 'Keep up the great work!',
 };
 
 export default function HomeScreen({ navigation }) {
+  const { theme } = useAppTheme();
   const [loading, setLoading] = useState(true);
   const [modules, setModules] = useState([]);
   const [appContent, setAppContent] = useState(initialContent);
+  const introProgress = useRef(new Animated.Value(0)).current;
+  const logoPulse = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(introProgress, {
+      toValue: 1,
+      duration: 480,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [introProgress]);
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(logoPulse, {
+          toValue: 1,
+          duration: 1200,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(logoPulse, {
+          toValue: 0,
+          duration: 1200,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [logoPulse]);
 
   const loadData = useCallback(async () => {
     try {
       const [contentData, moduleData] = await Promise.all([getAppContent(), getModules()]);
-      setAppContent(contentData || initialContent);
+      setAppContent({
+        ...initialContent,
+        ...(contentData || {}),
+        welcome_title: APP_WELCOME_TITLE,
+        welcome_description: APP_DESCRIPTION,
+      });
       setModules((moduleData || []).slice(0, 6));
     } finally {
       setLoading(false);
@@ -34,18 +81,14 @@ export default function HomeScreen({ navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#0ea5c6" />
-      </View>
+      <AppScreen style={[styles.loader, { backgroundColor: theme.colors.bg }] }>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      </AppScreen>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.brand}>Learn React</Text>
-      </View>
-
+    <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
       <FlatList
         data={modules}
         keyExtractor={(item) => String(item.id)}
@@ -53,91 +96,194 @@ export default function HomeScreen({ navigation }) {
         columnWrapperStyle={styles.column}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
-          <>
-            <View style={styles.welcomeCard}>
-              <Text style={styles.welcomeTitle}>{appContent.welcome_title}</Text>
-              <Text style={styles.welcomeDesc}>{appContent.welcome_description}</Text>
-            </View>
+          <Animated.View
+            style={[
+              styles.introSection,
+              {
+                opacity: introProgress,
+                transform: [
+                  {
+                    translateY: introProgress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [20, 0],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          >
+            <LinearGradient
+              colors={[theme.colors.heroBg, '#d2f2ff']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.welcomeCard, { borderColor: theme.colors.border }]}
+            >
+              <View style={styles.welcomeGrid}>
+                <View style={styles.welcomeIconColumn}>
+                  <Animated.View
+                    style={{
+                      transform: [
+                        {
+                          scale: logoPulse.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [1, 1.08],
+                          }),
+                        },
+                      ],
+                    }}
+                  >
+                    <Ionicons name="logo-react" size={50} color={theme.colors.primary} />
+                  </Animated.View>
+                </View>
+                <View style={styles.welcomeTextColumn}>
+                  <Text style={[styles.welcomeTitle, { color: theme.colors.primaryDeep }]} numberOfLines={2}>
+                    {appContent.welcome_title || APP_WELCOME_TITLE}
+                  </Text>
+                  <Text style={styles.welcomeDesc}>{appContent.welcome_description || APP_DESCRIPTION}</Text>
+                </View>
+              </View>
+            </LinearGradient>
 
-            <Text style={styles.sectionTitle}>Daily Motivation</Text>
-            <View style={styles.motivationCard}>
-              <Text style={styles.motivationHeading}>{appContent.motivation_text}</Text>
-              <Text style={styles.motivationQuote}>{appContent.motivation_quote}</Text>
+            <View style={styles.sectionTitleRow}>
+              <Ionicons name="bulb" size={18} color={theme.colors.warning} />
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Daily Motivation</Text>
+            </View>
+            <View style={[styles.motivationCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }] }>
+              <Text style={[styles.motivationHeading, { color: theme.colors.primaryDeep }]}>{appContent.motivation_text}</Text>
+              <Text style={[styles.motivationQuote, { color: theme.colors.text }]}>{appContent.motivation_quote}</Text>
             </View>
 
             <View style={styles.sectionRow}>
-              <Text style={styles.sectionTitle}>Learning Modules</Text>
-              <Pressable onPress={() => navigation.navigate('Modules')}>
-                <Text style={styles.viewAll}>View all</Text>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Learning Modules</Text>
+              <Pressable onPress={() => navigation.navigate('Modules')} style={({ pressed }) => (pressed ? styles.viewAllPressed : undefined)}>
+                <Text style={[styles.viewAll, { color: theme.colors.primary }]}>View all</Text>
               </Pressable>
             </View>
-          </>
+          </Animated.View>
         }
         renderItem={({ item }) => (
           <Pressable
-            style={styles.moduleCard}
+            style={({ pressed }) => [
+              styles.moduleCard,
+              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
+              pressed && styles.moduleCardPressed,
+            ]}
             onPress={() => navigation.navigate('Modules', { screen: 'ModuleDetails', params: { moduleId: item.id } })}
+            android_ripple={{ color: '#d4e7f0' }}
           >
-            <Text style={styles.moduleTitle} numberOfLines={2}>{item.title}</Text>
-            <Text style={styles.moduleMeta}>{item.lesson_count || 0} lessons</Text>
-            <Text style={styles.moduleMeta}>{item.total_read_time || 0} mins</Text>
+            {getModuleImage(item) ? (
+              <Image source={{ uri: getModuleImage(item) }} style={styles.moduleImage} resizeMode="cover" />
+            ) : (
+              <View style={[styles.moduleImageFallback, { backgroundColor: theme.colors.chipBg }] }>
+                <Text style={styles.moduleEmoji}>{getModuleEmoji(item.icon)}</Text>
+              </View>
+            )}
+            <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
+            <View style={styles.metaRow}>
+              <Ionicons name="book-outline" size={13} color={theme.colors.muted} />
+              <Text style={[styles.moduleMeta, { color: theme.colors.muted }]}>{item.lesson_count || 0} lessons</Text>
+            </View>
+            <View style={styles.metaRow}>
+              <Ionicons name="time-outline" size={13} color={theme.colors.muted} />
+              <Text style={[styles.moduleMeta, { color: theme.colors.muted }]}>{item.total_read_time || 0} mins</Text>
+            </View>
           </Pressable>
         )}
       />
-    </View>
+    </AppScreen>
   );
+}
+
+function getModuleImage(item) {
+  const candidates = [item?.thumbnail_url, item?.image_url, item?.icon_url, item?.cover_image];
+  const url = candidates.find((value) => typeof value === 'string' && value.startsWith('http'));
+  if (url) {
+    return url;
+  }
+
+  if (typeof item?.icon === 'string' && item.icon.startsWith('http')) {
+    return item.icon;
+  }
+
+  return null;
+}
+
+function getModuleEmoji(icon) {
+  const iconMap = {
+    book: '📘',
+    code: '💻',
+    design: '🎨',
+    video: '🎬',
+    quiz: '🧠',
+    project: '🛠️',
+    react: '⚛️',
+  };
+
+  if (typeof icon === 'string' && icon.length <= 3 && icon !== '?') {
+    return icon;
+  }
+
+  return iconMap[icon] || '📚';
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f3f8',
   },
   loader: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f5f3f8',
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 10,
-    backgroundColor: '#ffffff',
-  },
-  brand: {
-    fontSize: 38,
-    fontWeight: '700',
-    color: '#12131f',
   },
   listContent: {
     paddingHorizontal: 18,
-    paddingTop: 14,
-    paddingBottom: 120,
+    paddingTop: 4,
+    paddingBottom: 124,
+  },
+  introSection: {
+    marginBottom: 4,
   },
   welcomeCard: {
-    backgroundColor: '#dddae9',
-    borderRadius: 26,
+    borderRadius: brand.radius.lg,
     padding: 20,
     marginBottom: 18,
+    borderWidth: 1,
+    ...softShadows,
+  },
+  welcomeGrid: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  welcomeIconColumn: {
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 4,
+  },
+  welcomeTextColumn: {
+    width: '75%',
+    paddingLeft: 4,
   },
   welcomeTitle: {
-    fontSize: 42,
-    lineHeight: 48,
+    fontSize: 19,
+    lineHeight: 26,
     fontWeight: '700',
-    color: '#1a1b2e',
   },
   welcomeDesc: {
-    marginTop: 8,
-    color: '#36384e',
-    fontSize: 23,
-    lineHeight: 30,
+    marginTop: 10,
+    color: '#5d6887',
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 10,
   },
   sectionTitle: {
-    fontSize: 22,
+    fontSize: 17,
     fontWeight: '700',
-    color: '#12131f',
-    marginBottom: 10,
   },
   sectionRow: {
     flexDirection: 'row',
@@ -146,45 +292,72 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   viewAll: {
-    color: '#0ea5c6',
-    fontWeight: '600',
+    fontWeight: '700',
+  },
+  viewAllPressed: {
+    opacity: 0.65,
   },
   motivationCard: {
-    backgroundColor: '#dddae9',
-    borderRadius: 24,
+    borderRadius: brand.radius.md,
     padding: 16,
     marginBottom: 18,
+    borderWidth: 1,
+    ...softShadows,
   },
   motivationHeading: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '700',
-    color: '#1a1b2e',
   },
   motivationQuote: {
     marginTop: 8,
-    color: '#32354e',
-    fontSize: 20,
-    lineHeight: 28,
+    fontSize: 14,
+    lineHeight: 21,
   },
   column: {
     justifyContent: 'space-between',
   },
   moduleCard: {
     width: '48%',
-    backgroundColor: '#e5e3ea',
-    borderRadius: 22,
-    padding: 16,
+    borderRadius: brand.radius.md,
+    padding: 12,
     marginBottom: 12,
-    minHeight: 130,
+    minHeight: 180,
+    borderWidth: 1,
+    ...softShadows,
+  },
+  moduleCardPressed: {
+    transform: [{ scale: 0.97 }],
+    opacity: 0.88,
+  },
+  moduleImage: {
+    width: '100%',
+    height: 78,
+    borderRadius: 12,
+    marginBottom: 10,
+    backgroundColor: '#e8eefc',
+  },
+  moduleImageFallback: {
+    width: '100%',
+    height: 78,
+    borderRadius: 12,
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  moduleEmoji: {
+    fontSize: 28,
   },
   moduleTitle: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: '700',
-    color: '#181a2b',
+  },
+  metaRow: {
+    marginTop: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
   },
   moduleMeta: {
-    marginTop: 8,
-    color: '#585b72',
-    fontSize: 18,
+    fontSize: 12,
   },
 });
