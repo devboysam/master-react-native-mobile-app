@@ -8,7 +8,7 @@ import AppScreen from '../components/AppScreen';
 import { brand, softShadows } from '../theme/brand';
 import { useAppTheme } from '../theme/ThemeContext';
 
-const APP_NAME = 'Master React Native Course';
+const APP_NAME = 'Master React Native';
 const APP_WELCOME_TITLE = APP_NAME;
 const APP_DESCRIPTION = 'A practical React Native course app to help you master app development step by step.';
 
@@ -132,11 +132,11 @@ export default function HomeScreen({ navigation }) {
                       ],
                     }}
                   >
-                    <Ionicons name="logo-react" size={50} color={theme.colors.primary} />
+                    <Ionicons name="logo-react" size={60} color={theme.colors.primary} />
                   </Animated.View>
                 </View>
                 <View style={styles.welcomeTextColumn}>
-                  <Text style={[styles.welcomeTitle, { color: theme.colors.primaryDeep }]} numberOfLines={2}>
+                  <Text style={[styles.welcomeTitle, { color: theme.colors.primaryDeep }]} numberOfLines={1}>
                     {appContent.welcome_title || APP_WELCOME_TITLE}
                   </Text>
                   <Text style={styles.welcomeDesc}>{appContent.welcome_description || APP_DESCRIPTION}</Text>
