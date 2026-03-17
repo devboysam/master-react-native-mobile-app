@@ -145,7 +145,7 @@ export default function HomeScreen({ navigation }) {
             </LinearGradient>
 
             <LinearGradient
-              colors={['#fff8d7', '#ffe89a']}
+              colors={['#fffde6', '#ffe7a8', '#ffd38a']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.motivationCard}
@@ -153,7 +153,7 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.motivationGrid}>
                 <View style={styles.motivationIconColumn}>
                   <View style={styles.motivationIconShell}>
-                    <Ionicons name="bulb" size={34} color="#a57200" />
+                    <Ionicons name="bulb" size={34} color="#ff8a00" />
                   </View>
                 </View>
                 <View style={styles.motivationTextColumn}>
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 18,
     borderWidth: 1,
-    borderColor: '#ffd46b',
+    borderColor: '#ffc975',
     ...softShadows,
   },
   motivationGrid: {
@@ -326,21 +326,19 @@ const styles = StyleSheet.create({
     borderRadius: 26,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff1bc',
-    borderWidth: 1,
-    borderColor: '#ffd46b',
+    backgroundColor: '#fff7cf',
   },
   motivationHeading: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#7c5600',
+    color: '#7a4600',
     lineHeight: 24,
   },
   motivationQuote: {
     marginTop: 6,
     fontSize: 14,
     lineHeight: 21,
-    color: '#5b4500',
+    color: '#7a4f09',
   },
   column: {
     justifyContent: 'space-between',
