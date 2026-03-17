@@ -196,19 +196,21 @@ export default function HomeScreen({ navigation }) {
           >
             <View
               style={[
-                styles.moduleVisualWrap,
+                styles.moduleTopArea,
                 { backgroundColor: getModuleBackgroundColor(item) || theme.colors.chipBg },
               ]}
             >
-            {getModuleImage(item) ? (
-              <Image source={{ uri: getModuleImage(item) }} style={styles.moduleImage} resizeMode="cover" />
-            ) : (
-              <View style={styles.moduleImageFallback}>
-                <Text style={styles.moduleEmoji}>{getModuleEmoji(item.icon)}</Text>
+              <View style={styles.moduleVisualWrap}>
+                {getModuleImage(item) ? (
+                  <Image source={{ uri: getModuleImage(item) }} style={styles.moduleImage} resizeMode="contain" />
+                ) : (
+                  <View style={styles.moduleImageFallback}>
+                    <Text style={styles.moduleEmoji}>{getModuleEmoji(item.icon)}</Text>
+                  </View>
+                )}
               </View>
-            )}
+              <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
             </View>
-            <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
             <View style={[styles.metaBadge, styles.lessonsBadge]}>
               <Ionicons name="book-outline" size={13} color="#1d4ed8" />
               <Text style={[styles.moduleMeta, { color: '#1d4ed8' }]}>{item.lesson_count || 0} lessons</Text>
@@ -421,7 +423,7 @@ const styles = StyleSheet.create({
   moduleCard: {
     width: '48%',
     borderRadius: brand.radius.md,
-    padding: 12,
+    padding: 10,
     marginBottom: 12,
     minHeight: 196,
     borderWidth: 1,
@@ -431,29 +433,34 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.97 }],
     opacity: 0.88,
   },
+  moduleTopArea: {
+    borderRadius: 14,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 8,
+    marginBottom: 2,
+  },
   moduleVisualWrap: {
-    width: 72,
-    height: 72,
+    width: '100%',
+    height: 50,
     borderRadius: 16,
-    marginBottom: 10,
+    marginBottom: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
   moduleImage: {
-    width: 64,
-    height: 64,
-    borderRadius: 14,
-    backgroundColor: '#e8eefc',
+    width: 45,
+    height: 45,
+    backgroundColor: 'transparent',
   },
   moduleImageFallback: {
-    width: 64,
-    height: 64,
-    borderRadius: 14,
+    width: 45,
+    height: 45,
     alignItems: 'center',
     justifyContent: 'center',
   },
   moduleEmoji: {
-    fontSize: 28,
+    fontSize: 22,
   },
   moduleTitle: {
     fontSize: 16,
