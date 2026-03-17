@@ -41,13 +41,13 @@ export default function HomeScreen({ navigation }) {
       Animated.sequence([
         Animated.timing(logoPulse, {
           toValue: 1,
-          duration: 1200,
+          duration: 900,
           easing: Easing.inOut(Easing.sin),
           useNativeDriver: true,
         }),
         Animated.timing(logoPulse, {
           toValue: 0,
-          duration: 1200,
+          duration: 900,
           easing: Easing.inOut(Easing.sin),
           useNativeDriver: true,
         }),
@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }) {
                         {
                           scale: logoPulse.interpolate({
                             inputRange: [0, 1],
-                            outputRange: [1, 1.08],
+                            outputRange: [1, 1.18],
                           }),
                         },
                       ],
