@@ -168,7 +168,7 @@ export default function HomeScreen({ navigation }) {
 
             <View style={styles.sectionRow}>
               <View style={styles.headingWithIcon}>
-                <Ionicons name="library-outline" size={20} color={theme.colors.primaryDeep} />
+                <Ionicons name="sparkles-outline" size={20} color={theme.colors.primary} />
                 <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Learning Modules</Text>
               </View>
               <Pressable onPress={() => navigation.navigate('Modules')} style={({ pressed }) => (pressed ? styles.viewAllPressed : undefined)}>
