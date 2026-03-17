@@ -72,6 +72,12 @@ export default function ModulesScreen({ navigation }) {
             onPress={() => openModule(item.id)}
           >
             <View style={styles.rowLeft}>
+              <View
+                style={[
+                  styles.iconContainer,
+                  { backgroundColor: getModuleBackgroundColor(item) || '#EAF2FF' },
+                ]}
+              >
               {getModuleImage(item) ? (
                 <Image source={{ uri: getModuleImage(item) }} style={styles.iconImage} resizeMode="cover" />
               ) : (
@@ -79,6 +85,7 @@ export default function ModulesScreen({ navigation }) {
                   <Text style={styles.icon}>{moduleIcon(item.icon)}</Text>
                 </View>
               )}
+              </View>
               <View style={styles.textWrap}>
                 <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
                 <View style={styles.metaRow}>
@@ -112,6 +119,16 @@ function getModuleImage(item) {
   }
 
   return null;
+}
+
+function getModuleBackgroundColor(item) {
+  const raw = String(item?.background_color || '').trim();
+  if (!raw) {
+    return null;
+  }
+
+  const withHash = raw.startsWith('#') ? raw : `#${raw}`;
+  return /^#[0-9A-Fa-f]{6}$/.test(withHash) ? withHash : null;
 }
 
 const styles = StyleSheet.create({
@@ -163,17 +180,24 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
   },
+  iconContainer: {
+    width: 72,
+    height: 72,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   iconImage: {
-    width: 50,
-    height: 50,
+    width: 64,
+    height: 64,
     borderRadius: 14,
     backgroundColor: '#dce8fd',
   },
   iconWrap: {
-    width: 50,
-    height: 50,
+    width: 64,
+    height: 64,
     borderRadius: 14,
-    backgroundColor: '#eaf2ff',
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
   },

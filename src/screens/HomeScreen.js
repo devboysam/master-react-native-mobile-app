@@ -194,13 +194,20 @@ export default function HomeScreen({ navigation }) {
             onPress={() => navigation.navigate('Modules', { screen: 'ModuleDetails', params: { moduleId: item.id } })}
             android_ripple={{ color: '#d4e7f0' }}
           >
+            <View
+              style={[
+                styles.moduleVisualWrap,
+                { backgroundColor: getModuleBackgroundColor(item) || theme.colors.chipBg },
+              ]}
+            >
             {getModuleImage(item) ? (
               <Image source={{ uri: getModuleImage(item) }} style={styles.moduleImage} resizeMode="cover" />
             ) : (
-              <View style={[styles.moduleImageFallback, { backgroundColor: theme.colors.chipBg }] }>
+              <View style={styles.moduleImageFallback}>
                 <Text style={styles.moduleEmoji}>{getModuleEmoji(item.icon)}</Text>
               </View>
             )}
+            </View>
             <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
             <View style={[styles.metaBadge, styles.lessonsBadge]}>
               <Ionicons name="book-outline" size={13} color="#1d4ed8" />
@@ -247,6 +254,16 @@ function getModuleEmoji(icon) {
   }
 
   return iconMap[icon] || '📚';
+}
+
+function getModuleBackgroundColor(item) {
+  const raw = String(item?.background_color || '').trim();
+  if (!raw) {
+    return null;
+  }
+
+  const withHash = raw.startsWith('#') ? raw : `#${raw}`;
+  return /^#[0-9A-Fa-f]{6}$/.test(withHash) ? withHash : null;
 }
 
 const styles = StyleSheet.create({
@@ -406,7 +423,7 @@ const styles = StyleSheet.create({
     borderRadius: brand.radius.md,
     padding: 12,
     marginBottom: 12,
-    minHeight: 180,
+    minHeight: 196,
     borderWidth: 1,
     ...softShadows,
   },
@@ -414,18 +431,24 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.97 }],
     opacity: 0.88,
   },
-  moduleImage: {
-    width: '100%',
-    height: 78,
-    borderRadius: 12,
+  moduleVisualWrap: {
+    width: 72,
+    height: 72,
+    borderRadius: 16,
     marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  moduleImage: {
+    width: 64,
+    height: 64,
+    borderRadius: 14,
     backgroundColor: '#e8eefc',
   },
   moduleImageFallback: {
-    width: '100%',
-    height: 78,
-    borderRadius: 12,
-    marginBottom: 10,
+    width: 64,
+    height: 64,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
