@@ -19,6 +19,13 @@ const initialContent = {
   motivation_quote: 'Keep up the great work!',
 };
 
+const FONT = {
+  regular: 'Manrope_400Regular',
+  semi: 'Manrope_600SemiBold',
+  bold: 'Manrope_700Bold',
+  extra: 'Manrope_800ExtraBold',
+};
+
 export default function HomeScreen({ navigation }) {
   const { theme } = useAppTheme();
   const [loading, setLoading] = useState(true);
@@ -310,17 +317,18 @@ const styles = StyleSheet.create({
   welcomeTitle: {
     fontSize: 18,
     lineHeight: 22,
-    fontWeight: '800',
+    fontFamily: FONT.extra,
   },
   welcomeDesc: {
     marginTop: 6,
     color: '#5d6887',
     fontSize: 14,
     lineHeight: 20,
+    fontFamily: FONT.regular,
   },
   sectionTitle: {
     fontSize: 17,
-    fontWeight: '700',
+    fontFamily: FONT.bold,
   },
   headingWithIcon: {
     flexDirection: 'row',
@@ -334,7 +342,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   viewAll: {
-    fontWeight: '700',
+    fontFamily: FONT.bold,
   },
   viewAllPressed: {
     opacity: 0.65,
@@ -367,7 +375,7 @@ const styles = StyleSheet.create({
   motivationTagText: {
     color: '#a65d00',
     fontSize: 12,
-    fontWeight: '700',
+    fontFamily: FONT.bold,
     letterSpacing: 0.2,
   },
   motivationOrb: {
@@ -409,7 +417,7 @@ const styles = StyleSheet.create({
   },
   motivationHeading: {
     fontSize: 18,
-    fontWeight: '800',
+    fontFamily: FONT.extra,
     color: '#6d3f00',
     lineHeight: 24,
   },
@@ -418,6 +426,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     color: '#70480a',
+    fontFamily: FONT.regular,
   },
   column: {
     justifyContent: 'space-between',
@@ -426,8 +435,8 @@ const styles = StyleSheet.create({
     width: '48%',
     borderRadius: brand.radius.md,
     padding: 0,
-    marginBottom: 12,
-    minHeight: 196,
+    marginBottom: 14,
+    minHeight: 228,
     borderWidth: 1,
     overflow: 'hidden',
     ...softShadows,
@@ -437,9 +446,9 @@ const styles = StyleSheet.create({
     opacity: 0.88,
   },
   moduleTopArea: {
-    minHeight: 78,
+    minHeight: 94,
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingTop: 12,
     borderTopLeftRadius: brand.radius.md,
     borderTopRightRadius: brand.radius.md,
     borderBottomLeftRadius: 0,
@@ -447,33 +456,33 @@ const styles = StyleSheet.create({
   },
   moduleVisualWrap: {
     width: '100%',
-    height: 58,
+    height: 64,
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
   moduleBottomArea: {
-    paddingHorizontal: 10,
-    paddingTop: 8,
-    paddingBottom: 10,
+    paddingHorizontal: 12,
+    paddingTop: 10,
+    paddingBottom: 12,
   },
   moduleImage: {
-    width: 45,
-    height: 45,
+    width: 42,
+    height: 42,
     backgroundColor: 'transparent',
   },
   moduleImageFallback: {
-    width: 45,
-    height: 45,
+    width: 42,
+    height: 42,
     alignItems: 'center',
     justifyContent: 'center',
   },
   moduleEmoji: {
-    fontSize: 22,
+    fontSize: 20,
   },
   moduleTitle: {
     fontSize: 15,
-    fontWeight: '700',
+    fontFamily: FONT.bold,
     lineHeight: 21,
     letterSpacing: 0.2,
   },
@@ -495,6 +504,6 @@ const styles = StyleSheet.create({
   },
   moduleMeta: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: FONT.semi,
   },
 });

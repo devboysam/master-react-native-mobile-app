@@ -7,6 +7,12 @@ import AppScreen from '../components/AppScreen';
 import { brand, softShadows } from '../theme/brand';
 import { useAppTheme } from '../theme/ThemeContext';
 
+const FONT = {
+  regular: 'Manrope_400Regular',
+  semi: 'Manrope_600SemiBold',
+  bold: 'Manrope_700Bold',
+};
+
 function moduleIcon(icon) {
   if (icon === '?') {
     return '📚';
@@ -79,7 +85,7 @@ export default function ModulesScreen({ navigation }) {
                 ]}
               >
               {getModuleImage(item) ? (
-                <Image source={{ uri: getModuleImage(item) }} style={styles.iconImage} resizeMode="cover" />
+                <Image source={{ uri: getModuleImage(item) }} style={styles.iconImage} resizeMode="contain" />
               ) : (
                 <View style={styles.iconWrap}>
                   <Text style={styles.icon}>{moduleIcon(item.icon)}</Text>
@@ -145,13 +151,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: brand.type.h2,
-    fontWeight: '700',
+    fontFamily: FONT.bold,
     color: brand.colors.text,
   },
   subtitle: {
     marginTop: 4,
     marginBottom: 14,
     color: brand.colors.muted,
+    fontFamily: FONT.regular,
   },
   error: {
     color: '#b42318',
@@ -165,8 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: brand.colors.border,
+    borderWidth: 0,
     ...softShadows,
   },
   rowPressed: {
@@ -188,21 +194,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconImage: {
-    width: 64,
-    height: 64,
-    borderRadius: 14,
-    backgroundColor: '#dce8fd',
+    width: 48,
+    height: 48,
+    backgroundColor: 'transparent',
   },
   iconWrap: {
-    width: 64,
-    height: 64,
-    borderRadius: 14,
+    width: 48,
+    height: 48,
+    borderRadius: 12,
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    fontSize: 22,
+    fontSize: 20,
   },
   textWrap: {
     flex: 1,
@@ -210,7 +215,7 @@ const styles = StyleSheet.create({
   },
   moduleTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: FONT.bold,
   },
   metaRow: {
     marginTop: 4,
@@ -220,8 +225,10 @@ const styles = StyleSheet.create({
   },
   meta: {
     fontSize: 13,
+    fontFamily: FONT.semi,
   },
   empty: {
     marginTop: 8,
+    fontFamily: FONT.regular,
   },
 });

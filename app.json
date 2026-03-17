@@ -22,6 +22,9 @@
     },
     "android": {
       "package": "com.sam.courselearning"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

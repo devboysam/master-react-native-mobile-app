@@ -3,6 +3,13 @@ import { useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import { useFonts } from 'expo-font';
+import {
+  Manrope_400Regular,
+  Manrope_600SemiBold,
+  Manrope_700Bold,
+  Manrope_800ExtraBold,
+} from '@expo-google-fonts/manrope';
 import MainNavigator from './src/navigation/MainNavigator';
 import BrandSplash from './src/components/BrandSplash';
 import { ThemeContext } from './src/theme/ThemeContext';
@@ -12,6 +19,12 @@ import { getThemePreference, setThemePreference } from './src/storage/learningSt
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [mode, setMode] = useState('system');
+  const [fontsLoaded] = useFonts({
+    Manrope_400Regular,
+    Manrope_600SemiBold,
+    Manrope_700Bold,
+    Manrope_800ExtraBold,
+  });
   const systemMode = useColorScheme();
   const resolvedMode = mode === 'system' ? (systemMode === 'dark' ? 'dark' : 'light') : mode;
   const theme = createBrand(resolvedMode);
@@ -30,7 +43,7 @@ export default function App() {
     await setThemePreference(nextMode);
   }
 
-  if (showSplash) {
+  if (showSplash || !fontsLoaded) {
     return (
       <ThemeContext.Provider value={{ mode, setMode: handleSetMode, theme }}>
         <SafeAreaProvider>

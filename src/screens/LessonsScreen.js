@@ -2,11 +2,19 @@ import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getLessonsByModule, getModuleById } from '../api/client';
 import { getBookmarkedLessonIds, getCompletedLessonIds, toggleBookmarkedLesson } from '../storage/learningState';
 import AppScreen from '../components/AppScreen';
 import { brand, softShadows } from '../theme/brand';
 import { useAppTheme } from '../theme/ThemeContext';
+
+const FONT = {
+  regular: 'Manrope_400Regular',
+  semi: 'Manrope_600SemiBold',
+  bold: 'Manrope_700Bold',
+  extra: 'Manrope_800ExtraBold',
+};
 
 export default function LessonsScreen({ route, navigation }) {
   const { theme } = useAppTheme();
@@ -106,29 +114,36 @@ export default function LessonsScreen({ route, navigation }) {
               </Pressable>
             </View>
 
-            <View style={[styles.headerWrap, { borderColor: theme.colors.border, backgroundColor: theme.colors.heroBg }] }>
-              <Text style={styles.headerEyebrow}>Module Overview</Text>
-              <View style={styles.titleRow}>
-                <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{moduleItem?.title || 'Module Details'}</Text>
-                <Ionicons
-                  name={isModuleCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
-                  size={22}
-                  color={isModuleCompleted ? '#1e9e53' : '#9fb0d2'}
-                />
-              </View>
-              <Text style={[styles.subtitle, { color: theme.colors.muted }]}>{moduleItem?.description || 'Module overview and lessons'}</Text>
+            <View style={[styles.headerWrap, { borderColor: theme.colors.border }] }>
+              <LinearGradient
+                colors={[getModuleColor(moduleItem) || '#EAF2FF', '#F5FAFF']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.headerGradient}
+              >
+                <Text style={styles.headerEyebrow}>Module Overview</Text>
+                <View style={styles.titleRow}>
+                  <Text style={[styles.title, { color: '#1f2d4d' }]}>{moduleItem?.title || 'Module Details'}</Text>
+                  <Ionicons
+                    name={isModuleCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
+                    size={22}
+                    color={isModuleCompleted ? '#0f9d58' : '#8aa3c7'}
+                  />
+                </View>
+                <Text style={styles.subtitle}>{moduleItem?.description || 'Module overview and lessons'}</Text>
+              </LinearGradient>
             </View>
 
             {prerequisites.length ? (
               <>
                 <View style={styles.prereqHead}>
-                  <Ionicons name="sparkles-outline" size={15} color={theme.colors.primary} />
-                  <Text style={[styles.sectionTitle, styles.prereqTitle, { color: theme.colors.primaryDeep }]}>Prerequisites</Text>
+                  <Ionicons name="sparkles-outline" size={15} color="#C76F00" />
+                  <Text style={[styles.sectionTitle, styles.prereqTitle, { color: '#7A3F00' }]}>Prerequisites</Text>
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.prereqSliderContent}>
                   {prerequisites.map((item) => (
-                    <View key={item} style={[styles.bubble, { backgroundColor: '#dff4ff', borderColor: '#b8e4ff' }] }>
-                      <Text style={[styles.bubbleText, { color: theme.colors.primaryDeep }]}>{item}</Text>
+                    <View key={item} style={styles.bubble}>
+                      <Text style={styles.bubbleText}>{item}</Text>
                     </View>
                   ))}
                 </ScrollView>
@@ -183,6 +198,16 @@ export default function LessonsScreen({ route, navigation }) {
   );
 }
 
+function getModuleColor(moduleItem) {
+  const raw = String(moduleItem?.background_color || '').trim();
+  if (!raw) {
+    return null;
+  }
+
+  const withHash = raw.startsWith('#') ? raw : `#${raw}`;
+  return /^#[0-9A-Fa-f]{6}$/.test(withHash) ? withHash : null;
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -209,19 +234,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#eaf2ff',
   },
   backLabel: {
-    fontWeight: '600',
+    fontFamily: FONT.bold,
   },
   headerWrap: {
-    backgroundColor: '#eaf2ff',
     borderRadius: brand.radius.md,
-    padding: 16,
     marginBottom: 10,
     borderWidth: 1,
     borderColor: '#d4e2fb',
+    overflow: 'hidden',
+  },
+  headerGradient: {
+    padding: 16,
   },
   headerEyebrow: {
     fontSize: 12,
-    fontWeight: '700',
+    fontFamily: FONT.bold,
     letterSpacing: 0.4,
     color: '#5f78a8',
     textTransform: 'uppercase',
@@ -229,7 +256,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: brand.type.h2,
-    fontWeight: '800',
+    fontFamily: FONT.extra,
     marginBottom: 6,
     lineHeight: 36,
     letterSpacing: 0.3,
@@ -242,13 +269,14 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   subtitle: {
-    color: brand.colors.muted,
+    color: '#556482',
+    fontFamily: FONT.regular,
   },
   sectionTitle: {
     marginTop: 2,
     marginBottom: 10,
     fontSize: brand.type.h3,
-    fontWeight: '700',
+    fontFamily: FONT.bold,
     color: brand.colors.text,
   },
   prereqSliderContent: {
@@ -277,15 +305,16 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   bubble: {
-    backgroundColor: '#eaf2ff',
+    backgroundColor: '#FFF2DB',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: '#cfe6ff',
+    borderColor: '#FFD9A3',
   },
   bubbleText: {
-    color: '#3f4d77',
+    color: '#7A3F00',
+    fontFamily: FONT.semi,
   },
   row: {
     backgroundColor: '#ffffff',
@@ -318,12 +347,13 @@ const styles = StyleSheet.create({
   },
   lessonTitle: {
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: FONT.bold,
     color: brand.colors.text,
   },
   meta: {
     marginTop: 6,
     fontSize: 13,
+    fontFamily: FONT.regular,
   },
   metaInline: {
     marginTop: 6,
@@ -334,6 +364,7 @@ const styles = StyleSheet.create({
   timeValue: {
     fontSize: 13,
     marginTop: 0,
+    fontFamily: FONT.semi,
   },
   actionsColumn: {
     alignItems: 'center',
