@@ -118,6 +118,16 @@ export default function LessonReaderScreen({ route, navigation }) {
     [theme.colors.primaryDeep, theme.colors.text]
   );
 
+  const classesStyles = useMemo(
+    () => ({
+      tokKey: { color: '#f59e0b', fontWeight: '700' },
+      tokFn: { color: '#22d3ee' },
+      tokStr: { color: '#86efac' },
+      tokType: { color: '#c4b5fd' },
+    }),
+    []
+  );
+
   async function toggleBookmark() {
     const nextIsBookmarked = await toggleBookmarkedLesson(lessonId);
     setIsBookmarked(nextIsBookmarked);
@@ -179,6 +189,7 @@ export default function LessonReaderScreen({ route, navigation }) {
             source={{ html: htmlContent }}
             baseStyle={baseStyle}
             tagsStyles={tagsStyles}
+            classesStyles={classesStyles}
           />
         </View>
       </ScrollView>
@@ -193,14 +204,14 @@ function lessonToHtml(raw) {
   }
 
   if (/<\/?(h1|h2|h3|p|strong|em|pre|code|ul|li|br)\b/i.test(value)) {
-    return value;
+    return highlightHtmlCodeBlocks(value);
   }
 
   const escaped = escapeHtml(value);
 
   const codeTransformed = escaped.replace(/```([\w-]+)?\n([\s\S]*?)```/g, (_match, _lang, code) => {
     const formattedCode = code.trim().replace(/\n/g, '<br/>');
-    return `<pre><code>${formattedCode}</code></pre>`;
+    return `<pre><code>${highlightCodeTokens(formattedCode)}</code></pre>`;
   });
 
   const boldTransformed = codeTransformed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -212,6 +223,23 @@ function lessonToHtml(raw) {
     .map((chunk) => (chunk.startsWith('<pre>') ? chunk : `<p>${chunk.replace(/\n/g, '<br/>')}</p>`));
 
   return paragraphs.join('');
+}
+
+function highlightHtmlCodeBlocks(html) {
+  return String(html).replace(/<pre><code[^>]*>([\s\S]*?)<\/code><\/pre>/gi, (_full, code) => {
+    const escapedCode = escapeHtml(String(code));
+    const formattedCode = escapedCode.replace(/\n/g, '<br/>');
+    return `<pre><code>${highlightCodeTokens(formattedCode)}</code></pre>`;
+  });
+}
+
+function highlightCodeTokens(codeHtml) {
+  let output = String(codeHtml);
+  output = output.replace(/\b(import|export|default|const|let|var|return|function|from)\b/g, '<span class="tokKey">$1</span>');
+  output = output.replace(/\b(React|View|Text|ScrollView|FlatList)\b/g, '<span class="tokType">$1</span>');
+  output = output.replace(/'([^']*)'/g, "'<span class=\"tokStr\">$1</span>'");
+  output = output.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g, '<span class="tokFn">$1</span>(');
+  return output;
 }
 
 function escapeHtml(input) {

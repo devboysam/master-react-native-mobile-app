@@ -150,13 +150,17 @@ export default function HomeScreen({ navigation }) {
               end={{ x: 1, y: 1 }}
               style={styles.motivationCard}
             >
-              <View style={styles.motivationHeaderRow}>
-                <View style={styles.motivationIconBadge}>
-                  <Ionicons name="bulb" size={16} color="#a57200" />
+              <View style={styles.motivationGrid}>
+                <View style={styles.motivationIconColumn}>
+                  <View style={styles.motivationIconShell}>
+                    <Ionicons name="bulb" size={34} color="#a57200" />
+                  </View>
                 </View>
-                <Text style={styles.motivationHeading}>{appContent.motivation_text}</Text>
+                <View style={styles.motivationTextColumn}>
+                  <Text style={styles.motivationHeading}>{appContent.motivation_text}</Text>
+                  <Text style={styles.motivationQuote}>{appContent.motivation_quote}</Text>
+                </View>
               </View>
-              <Text style={styles.motivationQuote}>{appContent.motivation_quote}</Text>
             </LinearGradient>
 
             <View style={styles.sectionRow}>
@@ -303,26 +307,37 @@ const styles = StyleSheet.create({
     borderColor: '#ffd46b',
     ...softShadows,
   },
-  motivationHeaderRow: {
+  motivationGrid: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
   },
-  motivationIconBadge: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+  motivationIconColumn: {
+    width: 64,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff2b8',
+  },
+  motivationTextColumn: {
+    flex: 1,
+    paddingLeft: 6,
+  },
+  motivationIconShell: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff1bc',
+    borderWidth: 1,
+    borderColor: '#ffd46b',
   },
   motivationHeading: {
     fontSize: 18,
     fontWeight: '800',
     color: '#7c5600',
+    lineHeight: 24,
   },
   motivationQuote: {
-    marginTop: 8,
+    marginTop: 6,
     fontSize: 14,
     lineHeight: 21,
     color: '#5b4500',
