@@ -116,7 +116,7 @@ export default function LessonsScreen({ route, navigation }) {
 
             {prerequisites.length ? (
               <>
-                <View style={[styles.prereqHead, { backgroundColor: '#eaf8ff', borderColor: theme.colors.border }] }>
+                <View style={styles.prereqHead}>
                   <Ionicons name="sparkles-outline" size={15} color={theme.colors.primary} />
                   <Text style={[styles.sectionTitle, styles.prereqTitle, { color: theme.colors.primaryDeep }]}>Prerequisites</Text>
                 </View>
@@ -130,7 +130,10 @@ export default function LessonsScreen({ route, navigation }) {
               </>
             ) : null}
 
-            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Lessons</Text>
+            <View style={styles.lessonsHeadingRow}>
+              <Ionicons name="list-outline" size={20} color={theme.colors.primaryDeep} />
+              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Lessons</Text>
+            </View>
           </>
         }
         renderItem={({ item }) => (
@@ -139,7 +142,7 @@ export default function LessonsScreen({ route, navigation }) {
             onPress={() => navigation.push('LessonReader', { lessonId: item.id })}
           >
             <View style={styles.lessonIconWrap}>
-              <Ionicons name="logo-react" size={18} color={theme.colors.primary} />
+              <Ionicons name="document-text-outline" size={18} color={theme.colors.primary} />
             </View>
             <View style={styles.rowBody}>
               <Text style={[styles.lessonTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
@@ -221,8 +224,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: brand.type.h2,
-    fontWeight: '700',
-    marginBottom: 4,
+    fontWeight: '800',
+    marginBottom: 6,
+    lineHeight: 36,
+    letterSpacing: 0.3,
     color: brand.colors.primaryDeep,
   },
   titleRow: {
@@ -247,11 +252,10 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   prereqHead: {
-    borderWidth: 1,
-    borderRadius: 999,
+    borderWidth: 0,
     alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -261,6 +265,11 @@ const styles = StyleSheet.create({
     marginTop: 0,
     marginBottom: 0,
     fontSize: 15,
+  },
+  lessonsHeadingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   bubble: {
     backgroundColor: '#eaf2ff',

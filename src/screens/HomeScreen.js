@@ -167,7 +167,10 @@ export default function HomeScreen({ navigation }) {
             </LinearGradient>
 
             <View style={styles.sectionRow}>
-              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Learning Modules</Text>
+              <View style={styles.headingWithIcon}>
+                <Ionicons name="library-outline" size={20} color={theme.colors.primaryDeep} />
+                <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Learning Modules</Text>
+              </View>
               <Pressable onPress={() => navigation.navigate('Modules')} style={({ pressed }) => (pressed ? styles.viewAllPressed : undefined)}>
                 <Text style={[styles.viewAll, { color: theme.colors.primary }]}>View all</Text>
               </Pressable>
@@ -291,6 +294,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '700',
   },
+  headingWithIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   sectionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -384,8 +392,10 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   moduleTitle: {
-    fontSize: 15,
-    fontWeight: '700',
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
+    letterSpacing: 0.2,
   },
   metaRow: {
     marginTop: 6,
