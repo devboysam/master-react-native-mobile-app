@@ -132,7 +132,7 @@ export default function HomeScreen({ navigation }) {
                       ],
                     }}
                   >
-                    <Ionicons name="logo-react" size={60} color={theme.colors.primary} />
+                    <Ionicons name="logo-react" size={74} color={theme.colors.primary} />
                   </Animated.View>
                 </View>
                 <View style={styles.welcomeTextColumn}>
@@ -144,14 +144,20 @@ export default function HomeScreen({ navigation }) {
               </View>
             </LinearGradient>
 
-            <View style={styles.sectionTitleRow}>
-              <Ionicons name="bulb" size={18} color={theme.colors.warning} />
-              <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Daily Motivation</Text>
-            </View>
-            <View style={[styles.motivationCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }] }>
-              <Text style={[styles.motivationHeading, { color: theme.colors.primaryDeep }]}>{appContent.motivation_text}</Text>
-              <Text style={[styles.motivationQuote, { color: theme.colors.text }]}>{appContent.motivation_quote}</Text>
-            </View>
+            <LinearGradient
+              colors={['#fff8d7', '#ffe89a']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.motivationCard}
+            >
+              <View style={styles.motivationHeaderRow}>
+                <View style={styles.motivationIconBadge}>
+                  <Ionicons name="bulb" size={16} color="#a57200" />
+                </View>
+                <Text style={styles.motivationHeading}>{appContent.motivation_text}</Text>
+              </View>
+              <Text style={styles.motivationQuote}>{appContent.motivation_quote}</Text>
+            </LinearGradient>
 
             <View style={styles.sectionRow}>
               <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Learning Modules</Text>
@@ -252,34 +258,26 @@ const styles = StyleSheet.create({
   },
   welcomeGrid: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
   welcomeIconColumn: {
-    width: '25%',
+    marginRight: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 4,
   },
   welcomeTextColumn: {
-    width: '75%',
-    paddingLeft: 4,
+    flex: 1,
   },
   welcomeTitle: {
-    fontSize: 19,
-    lineHeight: 26,
-    fontWeight: '700',
+    fontSize: 18,
+    lineHeight: 22,
+    fontWeight: '800',
   },
   welcomeDesc: {
-    marginTop: 10,
+    marginTop: 6,
     color: '#5d6887',
     fontSize: 14,
     lineHeight: 20,
-  },
-  sectionTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 10,
   },
   sectionTitle: {
     fontSize: 17,
@@ -302,16 +300,32 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 18,
     borderWidth: 1,
+    borderColor: '#ffd46b',
     ...softShadows,
+  },
+  motivationHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  motivationIconBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff2b8',
   },
   motivationHeading: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '800',
+    color: '#7c5600',
   },
   motivationQuote: {
     marginTop: 8,
     fontSize: 14,
     lineHeight: 21,
+    color: '#5b4500',
   },
   column: {
     justifyContent: 'space-between',

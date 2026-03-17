@@ -83,6 +83,7 @@ export default function LessonsScreen({ route, navigation }) {
       </View>
 
       <View style={[styles.headerWrap, { borderColor: theme.colors.border }] }>
+        <Text style={styles.headerEyebrow}>Module Overview</Text>
         <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{moduleItem?.title || 'Module Details'}</Text>
         <Text style={[styles.subtitle, { color: theme.colors.muted }]}>{moduleItem?.description || 'Module overview and lessons'}</Text>
       </View>
@@ -104,44 +105,45 @@ export default function LessonsScreen({ route, navigation }) {
       ) : null}
 
       <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Lessons</Text>
-      <FlatList
-        data={lessons}
-        keyExtractor={(item) => String(item.id)}
-        contentContainerStyle={{ paddingBottom: 124 }}
-        renderItem={({ item }) => (
-          <Pressable
-            style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
-            onPress={() => navigation.push('LessonReader', { lessonId: item.id, moduleTitle: moduleItem?.title || 'React Native Module' })}
-          >
-            <View style={styles.lessonIconWrap}>
-              <Ionicons name="logo-react" size={18} color={theme.colors.primary} />
-            </View>
-            <View style={styles.rowBody}>
-              <Text style={[styles.lessonTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
-              <Text style={[styles.meta, { color: theme.colors.muted }]} numberOfLines={2}>{item.description || 'No description'}</Text>
-              <View style={styles.metaInline}>
-                <Ionicons name="time-outline" size={13} color={theme.colors.muted} />
-                <Text style={[styles.meta, { color: theme.colors.muted, marginTop: 0 }]}>Read time: {item.read_time} min</Text>
+      <View style={styles.listWrap}>
+        <FlatList
+          data={lessons}
+          keyExtractor={(item) => String(item.id)}
+          contentContainerStyle={{ paddingBottom: 124 }}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <Pressable
+              style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+              onPress={() => navigation.push('LessonReader', { lessonId: item.id, moduleTitle: moduleItem?.title || 'React Native Module' })}
+            >
+              <View style={styles.lessonIconWrap}>
+                <Ionicons name="logo-react" size={18} color={theme.colors.primary} />
               </View>
-            </View>
-            <View style={styles.actionsColumn}>
-              <Pressable
-                hitSlop={8}
-                onPress={() => handleToggleBookmark(item.id)}
-                style={({ pressed }) => [styles.bookmarkMini, pressed && styles.bookmarkMiniPressed]}
-              >
-                <Ionicons
-                  name={bookmarkSet.has(Number(item.id)) ? 'bookmark' : 'bookmark-outline'}
-                  size={16}
-                  color={theme.colors.primaryDeep}
-                />
-              </Pressable>
-              <Text style={styles.arrow}>{`#${item.lesson_order}`}</Text>
-            </View>
-          </Pressable>
-        )}
-        ListEmptyComponent={<Text style={[styles.meta, { color: theme.colors.muted }]}>No lessons for this module yet.</Text>}
-      />
+              <View style={styles.rowBody}>
+                <Text style={[styles.lessonTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
+                <Text style={[styles.meta, { color: theme.colors.muted }]} numberOfLines={2}>{item.description || 'No description'}</Text>
+                <View style={styles.metaInline}>
+                  <Ionicons name="time-outline" size={14} color={theme.colors.muted} />
+                </View>
+              </View>
+              <View style={styles.actionsColumn}>
+                <Pressable
+                  hitSlop={8}
+                  onPress={() => handleToggleBookmark(item.id)}
+                  style={({ pressed }) => [styles.bookmarkMini, pressed && styles.bookmarkMiniPressed]}
+                >
+                  <Ionicons
+                    name={bookmarkSet.has(Number(item.id)) ? 'bookmark' : 'bookmark-outline'}
+                    size={16}
+                    color={theme.colors.primaryDeep}
+                  />
+                </Pressable>
+              </View>
+            </Pressable>
+          )}
+          ListEmptyComponent={<Text style={[styles.meta, { color: theme.colors.muted }]}>No lessons for this module yet.</Text>}
+        />
+      </View>
     </AppScreen>
   );
 }
@@ -178,9 +180,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#eaf2ff',
     borderRadius: brand.radius.md,
     padding: 16,
-    marginBottom: 14,
+    marginBottom: 10,
     borderWidth: 1,
     borderColor: '#d4e2fb',
+  },
+  headerEyebrow: {
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    color: '#5f78a8',
+    textTransform: 'uppercase',
+    marginBottom: 6,
   },
   title: {
     fontSize: brand.type.h2,
@@ -197,6 +207,10 @@ const styles = StyleSheet.create({
     fontSize: brand.type.h3,
     fontWeight: '700',
     color: brand.colors.text,
+  },
+  listWrap: {
+    flex: 1,
+    minHeight: 300,
   },
   bubbleWrap: {
     flexDirection: 'row',
@@ -277,7 +291,7 @@ const styles = StyleSheet.create({
   },
   actionsColumn: {
     alignItems: 'center',
-    gap: 6,
+    justifyContent: 'center',
   },
   bookmarkMini: {
     width: 30,
@@ -291,10 +305,5 @@ const styles = StyleSheet.create({
   },
   bookmarkMiniPressed: {
     opacity: 0.7,
-  },
-  arrow: {
-    fontSize: 12,
-    color: brand.colors.muted,
-    fontWeight: '600',
   },
 });

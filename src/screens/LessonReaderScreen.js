@@ -23,7 +23,7 @@ import { useAppTheme } from '../theme/ThemeContext';
 
 export default function LessonReaderScreen({ route, navigation }) {
   const { theme } = useAppTheme();
-  const { lessonId, moduleTitle } = route.params || {};
+  const { lessonId } = route.params || {};
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -96,12 +96,15 @@ export default function LessonReaderScreen({ route, navigation }) {
         backgroundColor: '#1f2937',
         color: '#d7e0ff',
         borderRadius: 14,
-        padding: 12,
+        padding: 14,
         marginTop: 8,
         marginBottom: 14,
+        fontFamily: 'Courier New',
       },
       code: {
-        fontFamily: 'Courier',
+        fontFamily: 'Courier New',
+        fontSize: 14,
+        lineHeight: 22,
         color: '#9ad1ff',
       },
       ul: {
@@ -143,37 +146,33 @@ export default function LessonReaderScreen({ route, navigation }) {
 
   return (
     <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
-      <View style={styles.backRow}>
-        <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back" size={18} color={theme.colors.primaryDeep} />
-          <Text style={[styles.backLabel, { color: theme.colors.primaryDeep }]}>Back</Text>
-        </Pressable>
-      </View>
-
-      <View style={[styles.headerCard, { borderColor: theme.colors.border }] }>
-        <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{lesson.title}</Text>
-        <View style={styles.moduleInline}>
-          <Ionicons name="logo-react" size={14} color={theme.colors.primary} />
-          <Text style={[styles.meta, { color: theme.colors.primaryDeep }]}>Module: {moduleTitle || 'React Native Module'}</Text>
+      <ScrollView contentContainerStyle={{ paddingBottom: 124 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.backRow}>
+          <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={18} color={theme.colors.primaryDeep} />
+            <Text style={[styles.backLabel, { color: theme.colors.primaryDeep }]}>Back</Text>
+          </Pressable>
         </View>
-        <View style={styles.metaInline}>
-          <Ionicons name="time-outline" size={14} color={theme.colors.muted} />
-          <Text style={[styles.meta, { color: theme.colors.muted }]}>Estimated read time: {lesson.read_time} min</Text>
+
+        <View style={[styles.headerCard, { borderColor: theme.colors.border }] }>
+          <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{lesson.title}</Text>
+          <View style={styles.metaInline}>
+            <Ionicons name="time-outline" size={14} color={theme.colors.muted} />
+            <Text style={[styles.meta, { color: theme.colors.muted }]}>Estimated read time: {lesson.read_time} min</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.toolbar}>
-        <Pressable style={[styles.chip, { borderColor: theme.colors.border, backgroundColor: theme.colors.chipBg }]} onPress={toggleBookmark}>
-          <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color={theme.colors.primaryDeep} />
-          <Text style={[styles.chipText, { color: theme.colors.primaryDeep }]}>{isBookmarked ? 'Saved' : 'Save'}</Text>
-        </Pressable>
-        <Pressable style={[styles.chip, { borderColor: theme.colors.border, backgroundColor: theme.colors.chipBg }]} onPress={completeLesson}>
-          <Ionicons name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'} size={15} color={theme.colors.primaryDeep} />
-          <Text style={[styles.chipText, { color: theme.colors.primaryDeep }]}>{isCompleted ? 'Completed' : 'Mark Complete'}</Text>
-        </Pressable>
-      </View>
+        <View style={styles.toolbar}>
+          <Pressable style={[styles.chip, { borderColor: theme.colors.border, backgroundColor: theme.colors.chipBg }]} onPress={toggleBookmark}>
+            <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color={theme.colors.primaryDeep} />
+            <Text style={[styles.chipText, { color: theme.colors.primaryDeep }]}>{isBookmarked ? 'Saved' : 'Save'}</Text>
+          </Pressable>
+          <Pressable style={[styles.chip, { borderColor: theme.colors.border, backgroundColor: theme.colors.chipBg }]} onPress={completeLesson}>
+            <Ionicons name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'} size={15} color={theme.colors.primaryDeep} />
+            <Text style={[styles.chipText, { color: theme.colors.primaryDeep }]}>{isCompleted ? 'Completed' : 'Mark Complete'}</Text>
+          </Pressable>
+        </View>
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 124 }}>
         <View style={[styles.readerCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }] }>
           <RenderHTML
             contentWidth={width - 40}
@@ -200,7 +199,8 @@ function lessonToHtml(raw) {
   const escaped = escapeHtml(value);
 
   const codeTransformed = escaped.replace(/```([\w-]+)?\n([\s\S]*?)```/g, (_match, _lang, code) => {
-    return `<pre><code>${code.trim()}</code></pre>`;
+    const formattedCode = code.trim().replace(/\n/g, '<br/>');
+    return `<pre><code>${formattedCode}</code></pre>`;
   });
 
   const boldTransformed = codeTransformed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -291,12 +291,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   metaInline: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  moduleInline: {
-    marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
