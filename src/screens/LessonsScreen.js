@@ -85,6 +85,11 @@ export default function LessonsScreen({ route, navigation }) {
     });
   }
 
+  function handleBackToModules() {
+    // Always return to the module listing screen instead of switching tabs unexpectedly.
+    navigation.navigate('ModulesRoot');
+  }
+
   return (
     <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
       <FlatList
@@ -95,7 +100,7 @@ export default function LessonsScreen({ route, navigation }) {
         ListHeaderComponent={
           <>
             <View style={styles.backRow}>
-              <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>
+              <Pressable style={styles.backBtn} onPress={handleBackToModules}>
                 <Ionicons name="chevron-back" size={18} color={theme.colors.primaryDeep} />
                 <Text style={[styles.backLabel, { color: theme.colors.primaryDeep }]}>Back</Text>
               </Pressable>

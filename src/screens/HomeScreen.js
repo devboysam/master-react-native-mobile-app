@@ -202,13 +202,13 @@ export default function HomeScreen({ navigation }) {
               </View>
             )}
             <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
-            <View style={styles.metaRow}>
-              <Ionicons name="book-outline" size={13} color={theme.colors.muted} />
-              <Text style={[styles.moduleMeta, { color: theme.colors.muted }]}>{item.lesson_count || 0} lessons</Text>
+            <View style={[styles.metaBadge, styles.lessonsBadge]}>
+              <Ionicons name="book-outline" size={13} color="#1d4ed8" />
+              <Text style={[styles.moduleMeta, { color: '#1d4ed8' }]}>{item.lesson_count || 0} lessons</Text>
             </View>
-            <View style={styles.metaRow}>
-              <Ionicons name="time-outline" size={13} color={theme.colors.muted} />
-              <Text style={[styles.moduleMeta, { color: theme.colors.muted }]}>{item.total_read_time || 0} mins</Text>
+            <View style={[styles.metaBadge, styles.timeBadge]}>
+              <Ionicons name="time-outline" size={13} color="#0f766e" />
+              <Text style={[styles.moduleMeta, { color: '#0f766e' }]}>{item.total_read_time || 0} mins</Text>
             </View>
           </Pressable>
         )}
@@ -434,17 +434,28 @@ const styles = StyleSheet.create({
   },
   moduleTitle: {
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: '700',
     lineHeight: 22,
     letterSpacing: 0.2,
   },
-  metaRow: {
+  metaBadge: {
     marginTop: 6,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
+    alignSelf: 'flex-start',
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  lessonsBadge: {
+    backgroundColor: '#dbeafe',
+  },
+  timeBadge: {
+    backgroundColor: '#ccfbf1',
   },
   moduleMeta: {
     fontSize: 12,
+    fontWeight: '600',
   },
 });
