@@ -209,15 +209,17 @@ export default function HomeScreen({ navigation }) {
                   </View>
                 )}
               </View>
+            </View>
+            <View style={styles.moduleBottomArea}>
               <Text style={[styles.moduleTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
-            </View>
-            <View style={[styles.metaBadge, styles.lessonsBadge]}>
-              <Ionicons name="book-outline" size={13} color="#1d4ed8" />
-              <Text style={[styles.moduleMeta, { color: '#1d4ed8' }]}>{item.lesson_count || 0} lessons</Text>
-            </View>
-            <View style={[styles.metaBadge, styles.timeBadge]}>
-              <Ionicons name="time-outline" size={13} color="#0f766e" />
-              <Text style={[styles.moduleMeta, { color: '#0f766e' }]}>{item.total_read_time || 0} mins</Text>
+              <View style={[styles.metaBadge, styles.lessonsBadge]}>
+                <Ionicons name="book-outline" size={13} color="#1d4ed8" />
+                <Text style={[styles.moduleMeta, { color: '#1d4ed8' }]}>{item.lesson_count || 0} lessons</Text>
+              </View>
+              <View style={[styles.metaBadge, styles.timeBadge]}>
+                <Ionicons name="time-outline" size={13} color="#0f766e" />
+                <Text style={[styles.moduleMeta, { color: '#0f766e' }]}>{item.total_read_time || 0} mins</Text>
+              </View>
             </View>
           </Pressable>
         )}
@@ -423,10 +425,11 @@ const styles = StyleSheet.create({
   moduleCard: {
     width: '48%',
     borderRadius: brand.radius.md,
-    padding: 10,
+    padding: 0,
     marginBottom: 12,
     minHeight: 196,
     borderWidth: 1,
+    overflow: 'hidden',
     ...softShadows,
   },
   moduleCardPressed: {
@@ -434,19 +437,25 @@ const styles = StyleSheet.create({
     opacity: 0.88,
   },
   moduleTopArea: {
-    borderRadius: 14,
+    minHeight: 78,
     paddingHorizontal: 10,
     paddingTop: 10,
-    paddingBottom: 8,
-    marginBottom: 2,
+    borderTopLeftRadius: brand.radius.md,
+    borderTopRightRadius: brand.radius.md,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   moduleVisualWrap: {
     width: '100%',
-    height: 50,
+    height: 58,
     borderRadius: 16,
-    marginBottom: 6,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  moduleBottomArea: {
+    paddingHorizontal: 10,
+    paddingTop: 8,
+    paddingBottom: 10,
   },
   moduleImage: {
     width: 45,
@@ -463,9 +472,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
   moduleTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
-    lineHeight: 22,
+    lineHeight: 21,
     letterSpacing: 0.2,
   },
   metaBadge: {
