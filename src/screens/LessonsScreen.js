@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getLessonsByModule, getModuleById } from '../api/client';
-import { getBookmarkedLessonIds, toggleBookmarkedLesson } from '../storage/learningState';
+import { getBookmarkedLessonIds, getCompletedLessonIds, toggleBookmarkedLesson } from '../storage/learningState';
 import AppScreen from '../components/AppScreen';
 import { brand, softShadows } from '../theme/brand';
 import { useAppTheme } from '../theme/ThemeContext';
@@ -14,6 +14,7 @@ export default function LessonsScreen({ route, navigation }) {
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bookmarkSet, setBookmarkSet] = useState(new Set());
+  const [completedSet, setCompletedSet] = useState(new Set());
 
   const moduleId = route.params?.moduleId;
 
@@ -36,14 +37,25 @@ export default function LessonsScreen({ route, navigation }) {
         getModuleById(moduleId),
         getLessonsByModule(moduleId),
       ]);
-      const bookmarkIds = await getBookmarkedLessonIds();
+      const [bookmarkIds, completedIds] = await Promise.all([
+        getBookmarkedLessonIds(),
+        getCompletedLessonIds(),
+      ]);
       setModuleItem(moduleData);
       setLessons(lessonData || []);
       setBookmarkSet(new Set(bookmarkIds.map((id) => Number(id))));
+      setCompletedSet(new Set(completedIds.map((id) => Number(id))));
     } finally {
       setLoading(false);
     }
   }, [moduleId]);
+
+  const isModuleCompleted = useMemo(() => {
+    if (!lessons.length) {
+      return false;
+    }
+    return lessons.every((lessonItem) => completedSet.has(Number(lessonItem.id)));
+  }, [completedSet, lessons]);
 
   useFocusEffect(
     useCallback(() => {
@@ -91,7 +103,14 @@ export default function LessonsScreen({ route, navigation }) {
 
             <View style={[styles.headerWrap, { borderColor: theme.colors.border, backgroundColor: theme.colors.heroBg }] }>
               <Text style={styles.headerEyebrow}>Module Overview</Text>
-              <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{moduleItem?.title || 'Module Details'}</Text>
+              <View style={styles.titleRow}>
+                <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{moduleItem?.title || 'Module Details'}</Text>
+                <Ionicons
+                  name={isModuleCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
+                  size={22}
+                  color={isModuleCompleted ? '#1e9e53' : '#9fb0d2'}
+                />
+              </View>
               <Text style={[styles.subtitle, { color: theme.colors.muted }]}>{moduleItem?.description || 'Module overview and lessons'}</Text>
             </View>
 
@@ -101,13 +120,13 @@ export default function LessonsScreen({ route, navigation }) {
                   <Ionicons name="sparkles-outline" size={15} color={theme.colors.primary} />
                   <Text style={[styles.sectionTitle, styles.prereqTitle, { color: theme.colors.primaryDeep }]}>Prerequisites</Text>
                 </View>
-                <View style={styles.bubbleWrap}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.prereqSliderContent}>
                   {prerequisites.map((item) => (
                     <View key={item} style={[styles.bubble, { backgroundColor: '#dff4ff', borderColor: '#b8e4ff' }] }>
                       <Text style={[styles.bubbleText, { color: theme.colors.primaryDeep }]}>{item}</Text>
                     </View>
                   ))}
-                </View>
+                </ScrollView>
               </>
             ) : null}
 
@@ -142,6 +161,11 @@ export default function LessonsScreen({ route, navigation }) {
                   color={theme.colors.primaryDeep}
                 />
               </Pressable>
+              <Ionicons
+                name={completedSet.has(Number(item.id)) ? 'checkmark-circle' : 'checkmark-circle-outline'}
+                size={18}
+                color={completedSet.has(Number(item.id)) ? '#1e9e53' : '#b0bfdc'}
+              />
             </View>
           </Pressable>
         )}
@@ -201,6 +225,12 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     color: brand.colors.primaryDeep,
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
   subtitle: {
     color: brand.colors.muted,
   },
@@ -211,10 +241,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: brand.colors.text,
   },
-  bubbleWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  prereqSliderContent: {
     gap: 8,
+    paddingRight: 8,
     marginBottom: 14,
   },
   prereqHead: {
@@ -295,6 +324,7 @@ const styles = StyleSheet.create({
   actionsColumn: {
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 8,
   },
   bookmarkMini: {
     width: 30,

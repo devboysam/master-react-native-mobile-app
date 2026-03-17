@@ -164,7 +164,7 @@ export default function LessonReaderScreen({ route, navigation }) {
           </Pressable>
         </View>
 
-        <View style={[styles.headerCard, { borderColor: theme.colors.border }] }>
+        <View style={[styles.headerCard, { borderColor: theme.colors.border, backgroundColor: theme.colors.heroBg }] }>
           <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{lesson.title}</Text>
           <View style={styles.metaInline}>
             <Ionicons name="time-outline" size={14} color={theme.colors.muted} />
@@ -173,13 +173,13 @@ export default function LessonReaderScreen({ route, navigation }) {
         </View>
 
         <View style={styles.toolbar}>
-          <Pressable style={[styles.chip, { borderColor: theme.colors.border, backgroundColor: theme.colors.chipBg }]} onPress={toggleBookmark}>
-            <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color={theme.colors.primaryDeep} />
-            <Text style={[styles.chipText, { color: theme.colors.primaryDeep }]}>{isBookmarked ? 'Saved' : 'Save'}</Text>
+          <Pressable style={[styles.chip, styles.saveChip]} onPress={toggleBookmark}>
+            <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color="#1f3f88" />
+            <Text style={[styles.chipText, styles.saveChipText]}>{isBookmarked ? 'Saved' : 'Save'}</Text>
           </Pressable>
-          <Pressable style={[styles.chip, { borderColor: theme.colors.border, backgroundColor: theme.colors.chipBg }]} onPress={completeLesson}>
-            <Ionicons name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'} size={15} color={theme.colors.primaryDeep} />
-            <Text style={[styles.chipText, { color: theme.colors.primaryDeep }]}>{isCompleted ? 'Completed' : 'Mark Complete'}</Text>
+          <Pressable style={[styles.chip, isCompleted ? styles.completedChip : styles.pendingChip]} onPress={completeLesson}>
+            <Ionicons name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'} size={15} color={isCompleted ? '#0f7a3c' : '#1f3f88'} />
+            <Text style={[styles.chipText, isCompleted ? styles.completedChipText : styles.saveChipText]}>{isCompleted ? 'Completed' : 'Mark Complete'}</Text>
           </Pressable>
         </View>
 
@@ -235,10 +235,10 @@ function highlightHtmlCodeBlocks(html) {
 
 function highlightCodeTokens(codeHtml) {
   let output = String(codeHtml);
-  output = output.replace(/\b(import|export|default|const|let|var|return|function|from)\b/g, '<span class="tokKey">$1</span>');
-  output = output.replace(/\b(React|View|Text|ScrollView|FlatList)\b/g, '<span class="tokType">$1</span>');
-  output = output.replace(/'([^']*)'/g, "'<span class=\"tokStr\">$1</span>'");
-  output = output.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g, '<span class="tokFn">$1</span>(');
+  output = output.replace(/\b(import|export|default|const|let|var|return|function|from)\b/g, '<span style="color:#f59e0b;font-weight:700;">$1</span>');
+  output = output.replace(/\b(React|View|Text|ScrollView|FlatList)\b/g, '<span style="color:#c4b5fd;">$1</span>');
+  output = output.replace(/'([^']*)'/g, "'<span style=\"color:#86efac;\">$1</span>'");
+  output = output.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g, '<span style="color:#22d3ee;">$1</span>(');
   return output;
 }
 
@@ -300,7 +300,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   chip: {
-    backgroundColor: '#edf2ff',
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -308,12 +307,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     borderWidth: 1,
-    borderColor: '#d6dff6',
+  },
+  saveChip: {
+    backgroundColor: '#dbe8ff',
+    borderColor: '#b7cdfa',
+  },
+  pendingChip: {
+    backgroundColor: '#dbe8ff',
+    borderColor: '#b7cdfa',
+  },
+  completedChip: {
+    backgroundColor: '#dcf7e8',
+    borderColor: '#9bd8b8',
   },
   chipText: {
-    color: '#233768',
     fontWeight: '500',
     fontSize: 13,
+  },
+  saveChipText: {
+    color: '#1f3f88',
+  },
+  completedChipText: {
+    color: '#0f7a3c',
   },
   meta: {
     fontSize: 13,

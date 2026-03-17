@@ -124,6 +124,9 @@ export default function HomeScreen({ navigation }) {
                     style={{
                       transform: [
                         {
+                          translateX: -6,
+                        },
+                        {
                           scale: logoPulse.interpolate({
                             inputRange: [0, 1],
                             outputRange: [1, 1.18],
@@ -132,7 +135,7 @@ export default function HomeScreen({ navigation }) {
                       ],
                     }}
                   >
-                    <Ionicons name="logo-react" size={74} color={theme.colors.primary} />
+                    <Ionicons name="logo-react" size={66} color={theme.colors.primary} />
                   </Animated.View>
                 </View>
                 <View style={styles.welcomeTextColumn}>
@@ -265,7 +268,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   welcomeIconColumn: {
-    marginRight: 8,
+    marginRight: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -326,7 +329,7 @@ const styles = StyleSheet.create({
     borderRadius: 31,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff7cf',
+    backgroundColor: 'transparent',
     shadowColor: '#ffb300',
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 0 },
