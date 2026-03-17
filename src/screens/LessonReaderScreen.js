@@ -157,11 +157,19 @@ export default function LessonReaderScreen({ route, navigation }) {
   return (
     <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
       <ScrollView contentContainerStyle={{ paddingBottom: 124 }} showsVerticalScrollIndicator={false}>
-        <View style={styles.backRow}>
+        <View style={styles.topBarRow}>
           <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>
             <Ionicons name="chevron-back" size={18} color={theme.colors.primaryDeep} />
             <Text style={[styles.backLabel, { color: theme.colors.primaryDeep }]}>Back</Text>
           </Pressable>
+          <View style={styles.topActionsRow}>
+            <Pressable style={[styles.chip, styles.saveChip]} onPress={toggleBookmark}>
+              <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color="#1f3f88" />
+            </Pressable>
+            <Pressable style={[styles.chip, isCompleted ? styles.completedChip : styles.pendingChip]} onPress={completeLesson}>
+              <Ionicons name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'} size={15} color={isCompleted ? '#0f7a3c' : '#1f3f88'} />
+            </Pressable>
+          </View>
         </View>
 
         <View style={[styles.headerCard, { borderColor: theme.colors.border, backgroundColor: theme.colors.heroBg }] }>
@@ -173,14 +181,7 @@ export default function LessonReaderScreen({ route, navigation }) {
         </View>
 
         <View style={styles.toolbar}>
-          <Pressable style={[styles.chip, styles.saveChip]} onPress={toggleBookmark}>
-            <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color="#1f3f88" />
-            <Text style={[styles.chipText, styles.saveChipText]}>{isBookmarked ? 'Saved' : 'Save'}</Text>
-          </Pressable>
-          <Pressable style={[styles.chip, isCompleted ? styles.completedChip : styles.pendingChip]} onPress={completeLesson}>
-            <Ionicons name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'} size={15} color={isCompleted ? '#0f7a3c' : '#1f3f88'} />
-            <Text style={[styles.chipText, isCompleted ? styles.completedChipText : styles.saveChipText]}>{isCompleted ? 'Completed' : 'Mark Complete'}</Text>
-          </Pressable>
+          <Text style={[styles.meta, { color: theme.colors.muted }]}>{isBookmarked ? 'Saved for later' : 'Tap bookmark to save'} • {isCompleted ? 'Completed' : 'In progress'}</Text>
         </View>
 
         <View style={[styles.readerCard, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }] }>
@@ -235,10 +236,10 @@ function highlightHtmlCodeBlocks(html) {
 
 function highlightCodeTokens(codeHtml) {
   let output = String(codeHtml);
-  output = output.replace(/\b(import|export|default|const|let|var|return|function|from)\b/g, '<span style="color:#f59e0b;font-weight:700;">$1</span>');
-  output = output.replace(/\b(React|View|Text|ScrollView|FlatList)\b/g, '<span style="color:#c4b5fd;">$1</span>');
-  output = output.replace(/'([^']*)'/g, "'<span style=\"color:#86efac;\">$1</span>'");
-  output = output.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g, '<span style="color:#22d3ee;">$1</span>(');
+  output = output.replace(/\b(import|export|default|const|let|var|return|function|from)\b/g, '<span class="tokKey" style="color:#f59e0b;font-weight:700;">$1</span>');
+  output = output.replace(/\b(React|View|Text|ScrollView|FlatList)\b/g, '<span class="tokType" style="color:#c4b5fd;">$1</span>');
+  output = output.replace(/'([^']*)'/g, "'<span class=\"tokStr\" style=\"color:#86efac;\">$1</span>'");
+  output = output.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g, '<span class="tokFn" style="color:#22d3ee;">$1</span>(');
   return output;
 }
 
@@ -263,8 +264,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backRow: {
+  topBarRow: {
     marginBottom: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  topActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   backBtn: {
     alignSelf: 'flex-start',
@@ -294,18 +304,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   toolbar: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   chip: {
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
     borderWidth: 1,
   },
   saveChip: {
@@ -319,16 +325,6 @@ const styles = StyleSheet.create({
   completedChip: {
     backgroundColor: '#dcf7e8',
     borderColor: '#9bd8b8',
-  },
-  chipText: {
-    fontWeight: '500',
-    fontSize: 13,
-  },
-  saveChipText: {
-    color: '#1f3f88',
-  },
-  completedChipText: {
-    color: '#0f7a3c',
   },
   meta: {
     fontSize: 13,

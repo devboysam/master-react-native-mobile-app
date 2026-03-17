@@ -274,6 +274,7 @@ const styles = StyleSheet.create({
   },
   welcomeTextColumn: {
     flex: 1,
+    paddingLeft: 8,
   },
   welcomeTitle: {
     fontSize: 18,

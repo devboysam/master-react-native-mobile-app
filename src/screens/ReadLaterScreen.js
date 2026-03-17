@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { getLessonsByModule, getModules } from '../api/client';
 import { getBookmarkedLessonIds } from '../storage/learningState';
 import AppScreen from '../components/AppScreen';
@@ -81,9 +82,16 @@ export default function ReadLaterScreen({ navigation }) {
               navigation.navigate('Modules', { screen: 'LessonReader', params: { lessonId: item.id } })
             }
           >
-            <Text style={[styles.lessonTitle, { color: theme.colors.text }]}>{item.title}</Text>
-            <Text style={[styles.meta, { color: theme.colors.muted }]}>{moduleMap[item.module_id]?.title || 'Unknown module'}</Text>
-            <Text style={[styles.meta, { color: theme.colors.muted }]}>{item.read_time} min</Text>
+            <View style={styles.rowInner}>
+              <View style={styles.iconWrap}>
+                <Ionicons name="logo-react" size={18} color={theme.colors.primary} />
+              </View>
+              <View style={styles.rowBody}>
+                <Text style={[styles.lessonTitle, { color: theme.colors.text }]}>{item.title}</Text>
+                <Text style={[styles.meta, { color: theme.colors.muted }]}>{moduleMap[item.module_id]?.title || 'Unknown module'}</Text>
+                <Text style={[styles.meta, { color: theme.colors.muted }]}>{item.read_time} min</Text>
+              </View>
+            </View>
           </Pressable>
         )}
         ListEmptyComponent={<Text style={[styles.text, { color: theme.colors.muted }]}>No bookmarked lessons yet.</Text>}
@@ -133,6 +141,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: brand.colors.border,
     ...softShadows,
+  },
+  rowInner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  iconWrap: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#d5f3ff',
+    marginTop: 2,
+  },
+  rowBody: {
+    flex: 1,
   },
   rowPressed: {
     opacity: 0.9,
