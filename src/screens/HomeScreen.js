@@ -153,7 +153,7 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.motivationGrid}>
                 <View style={styles.motivationIconColumn}>
                   <View style={styles.motivationIconShell}>
-                    <Ionicons name="bulb" size={34} color="#ff8a00" />
+                    <Ionicons name="bulb" size={42} color="#ff8a00" />
                   </View>
                 </View>
                 <View style={styles.motivationTextColumn}>
@@ -321,12 +321,17 @@ const styles = StyleSheet.create({
     paddingLeft: 6,
   },
   motivationIconShell: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
+    width: 62,
+    height: 62,
+    borderRadius: 31,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff7cf',
+    shadowColor: '#ffb300',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 14,
+    elevation: 8,
   },
   motivationHeading: {
     fontSize: 18,
