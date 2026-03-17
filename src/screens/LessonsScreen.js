@@ -142,7 +142,7 @@ export default function LessonsScreen({ route, navigation }) {
             onPress={() => navigation.push('LessonReader', { lessonId: item.id })}
           >
             <View style={styles.lessonIconWrap}>
-              <Ionicons name="sparkles-outline" size={18} color={theme.colors.primary} />
+              <Ionicons name="document-text-outline" size={18} color={theme.colors.primary} />
             </View>
             <View style={styles.rowBody}>
               <Text style={[styles.lessonTitle, { color: theme.colors.text }]} numberOfLines={2}>{item.title}</Text>
