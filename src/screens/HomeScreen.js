@@ -148,11 +148,18 @@ export default function HomeScreen({ navigation }) {
             </LinearGradient>
 
             <LinearGradient
-              colors={['#fffde6', '#ffe7a8', '#ffd38a']}
+              colors={['#fffef4', '#fff1be', '#ffd78f']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.motivationCard}
             >
+              <View style={styles.motivationTopRow}>
+                <View style={styles.motivationTag}>
+                  <Ionicons name="flash-outline" size={12} color="#ff8a00" />
+                  <Text style={styles.motivationTagText}>Today's Boost</Text>
+                </View>
+                <View style={styles.motivationOrb} />
+              </View>
               <View style={styles.motivationGrid}>
                 <View style={styles.motivationIconColumn}>
                   <View style={styles.motivationIconShell}>
@@ -316,8 +323,42 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 18,
     borderWidth: 1,
-    borderColor: '#ffc975',
+    borderColor: '#ffca7a',
     ...softShadows,
+  },
+  motivationTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  motivationTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: '#fff9df',
+    borderColor: '#ffd993',
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  motivationTagText: {
+    color: '#a65d00',
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.2,
+  },
+  motivationOrb: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#ffc163',
+    shadowColor: '#ff9f1c',
+    shadowOpacity: 0.55,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 8,
+    elevation: 6,
   },
   motivationGrid: {
     flexDirection: 'row',
@@ -348,14 +389,14 @@ const styles = StyleSheet.create({
   motivationHeading: {
     fontSize: 18,
     fontWeight: '800',
-    color: '#7a4600',
+    color: '#6d3f00',
     lineHeight: 24,
   },
   motivationQuote: {
     marginTop: 6,
     fontSize: 14,
     lineHeight: 21,
-    color: '#7a4f09',
+    color: '#70480a',
   },
   column: {
     justifyContent: 'space-between',
