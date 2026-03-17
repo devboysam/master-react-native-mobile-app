@@ -36,12 +36,23 @@ jobs:
     name: EAS Update (OTA)
     runs-on: ubuntu-latest
     needs: ci
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') && secrets.EXPO_TOKEN != ''
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main')
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check Expo token
+        id: token_check
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "EXPO_TOKEN is missing. OTA update will be skipped."
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node
+        if: steps.token_check.outputs.should_run == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -49,13 +60,17 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Setup Expo and EAS
+        if: steps.token_check.outputs.should_run == 'true'
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
+        if: steps.token_check.outputs.should_run == 'true'
         run: npm ci
 
       - name: Publish OTA update
-        run: npx eas update --branch production --message "CI OTA update: ${{ github.sha }}" --non-interactive
+        if: steps.token_check.outputs.should_run == 'true'
+        run: |
+          npx eas update --branch production --message "CI OTA update: ${{ github.sha }}" --non-interactive
