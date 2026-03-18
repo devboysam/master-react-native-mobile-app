@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -128,6 +128,7 @@ export default function LessonsScreen({ route, navigation }) {
                     name={isModuleCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
                     size={22}
                     color={isModuleCompleted ? '#0f9d58' : '#8aa3c7'}
+                    style={styles.titleStatusIcon}
                   />
                 </View>
                 <Text style={styles.subtitle}>{moduleItem?.description || 'Module overview and lessons'}</Text>
@@ -140,13 +141,13 @@ export default function LessonsScreen({ route, navigation }) {
                   <Ionicons name="sparkles-outline" size={15} color="#C76F00" />
                   <Text style={[styles.sectionTitle, styles.prereqTitle, { color: '#7A3F00' }]}>Prerequisites</Text>
                 </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.prereqSliderContent}>
+                <View style={styles.prereqWrap}>
                   {prerequisites.map((item) => (
                     <View key={item} style={styles.bubble}>
                       <Text style={styles.bubbleText}>{item}</Text>
                     </View>
                   ))}
-                </ScrollView>
+                </View>
               </>
             ) : null}
 
@@ -247,6 +248,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: brand.type.h2,
     fontFamily: FONT.extra,
+    flex: 1,
     marginBottom: 6,
     lineHeight: 36,
     letterSpacing: 0.3,
@@ -254,9 +256,11 @@ const styles = StyleSheet.create({
   },
   titleRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     gap: 8,
+  },
+  titleStatusIcon: {
+    marginTop: 4,
   },
   subtitle: {
     color: '#556482',
@@ -269,9 +273,10 @@ const styles = StyleSheet.create({
     fontFamily: FONT.bold,
     color: brand.colors.text,
   },
-  prereqSliderContent: {
+  prereqWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
-    paddingRight: 8,
     marginBottom: 14,
   },
   prereqHead: {
@@ -301,6 +306,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     borderWidth: 1,
     borderColor: '#FFD9A3',
+    maxWidth: '100%',
   },
   bubbleText: {
     color: '#7A3F00',
