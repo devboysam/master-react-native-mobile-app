@@ -47,7 +47,7 @@ export default function BrandSplash() {
         <View style={styles.logoWrap}>
           <Ionicons name="logo-react" size={56} color="#ffffff" />
         </View>
-        <Text style={styles.title}>Master React Native Course</Text>
+        <Text style={styles.title}>Master React Native</Text>
         <Text style={styles.subtitle}>This React Native course app helps you practice daily and master mobile development.</Text>
       </Animated.View>
     </LinearGradient>

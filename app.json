@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "Master React Native Course",
+    "name": "Master React Native",
     "slug": "course-learning",
+    "owner": "altsam051",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -17,7 +18,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "02682e2d-2817-4879-a474-c392da8707ce"
+        "projectId": "92b133a6-390b-40e6-a736-973284e1daef"
       }
     },
     "android": {

@@ -123,7 +123,7 @@ export default function SettingsScreen() {
 
         <View style={[styles.card, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }] }>
           <Text style={[styles.label, { color: theme.colors.muted }]}>About This App</Text>
-          <Text style={[styles.aboutText, { color: theme.colors.text }]}>Master React Native Course helps you practice daily and master real React Native development.</Text>
+          <Text style={[styles.aboutText, { color: theme.colors.text }]}>Master React Native helps you practice daily and master real React Native development.</Text>
           <Text style={[styles.aboutText, { color: theme.colors.muted }]}>Instructor: Sam • Platform: React Native + Expo • Backend: Railway • Admin: Hostinger</Text>
         </View>
 
