@@ -81,7 +81,7 @@ export default function ModulesScreen({ navigation }) {
               <View
                 style={[
                   styles.iconContainer,
-                  { backgroundColor: getModuleBackgroundColor(item) || '#EAF2FF' },
+                  { backgroundColor: '#EAF2FF' },
                 ]}
               >
               {getModuleImage(item) ? (
@@ -125,16 +125,6 @@ function getModuleImage(item) {
   }
 
   return null;
-}
-
-function getModuleBackgroundColor(item) {
-  const raw = String(item?.background_color || '').trim();
-  if (!raw) {
-    return null;
-  }
-
-  const withHash = raw.startsWith('#') ? raw : `#${raw}`;
-  return /^#[0-9A-Fa-f]{6}$/.test(withHash) ? withHash : null;
 }
 
 const styles = StyleSheet.create({

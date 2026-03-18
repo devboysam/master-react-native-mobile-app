@@ -116,7 +116,7 @@ export default function LessonsScreen({ route, navigation }) {
 
             <View style={[styles.headerWrap, { borderColor: theme.colors.border }] }>
               <LinearGradient
-                colors={[getModuleColor(moduleItem) || '#EAF2FF', '#F5FAFF']}
+                colors={['#EAF2FF', '#F5FAFF']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.headerGradient}
@@ -196,16 +196,6 @@ export default function LessonsScreen({ route, navigation }) {
       />
     </AppScreen>
   );
-}
-
-function getModuleColor(moduleItem) {
-  const raw = String(moduleItem?.background_color || '').trim();
-  if (!raw) {
-    return null;
-  }
-
-  const withHash = raw.startsWith('#') ? raw : `#${raw}`;
-  return /^#[0-9A-Fa-f]{6}$/.test(withHash) ? withHash : null;
 }
 
 const styles = StyleSheet.create({
