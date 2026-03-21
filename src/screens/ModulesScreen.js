@@ -187,27 +187,27 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   iconContainer: {
-    width: 72,
-    height: 72,
+    width: 78,
+    height: 78,
     borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },
   iconImage: {
-    width: 48,
-    height: 48,
+    width: 58,
+    height: 58,
     backgroundColor: 'transparent',
   },
   iconWrap: {
-    width: 48,
-    height: 48,
+    width: 58,
+    height: 58,
     borderRadius: 12,
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
   },
   icon: {
-    fontSize: 20,
+    fontSize: 24,
   },
   textWrap: {
     flex: 1,
@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
   moduleTitle: {
     fontSize: 16,
     fontFamily: FONT.bold,
+    lineHeight: 20,
   },
   metaRow: {
     marginTop: 4,

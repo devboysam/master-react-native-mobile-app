@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
   },
   moduleVisualWrap: {
     width: '100%',
-    height: 64,
+    height: 72,
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
@@ -467,23 +467,23 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   moduleImage: {
-    width: 42,
-    height: 42,
+    width: 54,
+    height: 54,
     backgroundColor: 'transparent',
   },
   moduleImageFallback: {
-    width: 42,
-    height: 42,
+    width: 54,
+    height: 54,
     alignItems: 'center',
     justifyContent: 'center',
   },
   moduleEmoji: {
-    fontSize: 20,
+    fontSize: 24,
   },
   moduleTitle: {
     fontSize: 15,
     fontFamily: FONT.bold,
-    lineHeight: 21,
+    lineHeight: 18,
     letterSpacing: 0.2,
   },
   metaBadge: {

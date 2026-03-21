@@ -1,7 +1,7 @@
 const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_BASE_URL ||
   process.env.EXPO_PUBLIC_API_URL ||
-  'https://master-react-native-backend-production.up.railway.app';
+  'https://api.masterreactnative.dev';
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {

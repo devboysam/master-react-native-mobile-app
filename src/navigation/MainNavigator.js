@@ -10,8 +10,11 @@ import { getFloatingTabBarStyle } from '../components/FloatingTabBarStyle';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+
 
 function ModulesStack() {
   return (
@@ -55,4 +58,5 @@ export default function MainNavigator() {
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
+
 }
