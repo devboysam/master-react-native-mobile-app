@@ -15,38 +15,47 @@ const tokens = {
   },
 };
 
+// React Native Official Colors
+// Primary: #61DAFB (React Blue - Cyan)
+// Dark: #282C34 (Dark background)
+// Accent: #9B59B6 (Purple for accents)
+
 export const lightColors = {
-  bg: '#f1f4fb',
+  bg: '#f5f8fd',
   card: '#ffffff',
-  primary: '#61dafb',
-  primarySoft: '#61dafb',
+  primary: '#61DAFB',
+  primarySoft: '#a8e6ff',
   primaryDeep: '#20232a',
   text: '#20232a',
-  muted: '#66708e',
-  border: '#dfe6f5',
-  success: '#16a34a',
+  muted: '#6b7280',
+  border: '#e5e7eb',
+  success: '#10b981',
   warning: '#f59e0b',
-  gradientStart: '#61dafb',
+  error: '#ef4444',
+  accent: '#9B59B6',
+  gradientStart: '#61DAFB',
   gradientEnd: '#7be6ff',
-  chipBg: '#e8f7ff',
-  heroBg: '#e7f8ff',
+  chipBg: '#e0f7ff',
+  heroBg: '#e6f9ff',
 };
 
 export const darkColors = {
-  bg: '#090f1d',
-  card: '#111a2f',
-  primary: '#61dafb',
+  bg: '#0a0e1a',
+  card: '#1a1f2e',
+  primary: '#61DAFB',
   primarySoft: '#88e6ff',
   primaryDeep: '#d3ecff',
-  text: '#e8efff',
-  muted: '#9aa8c5',
-  border: '#26314a',
+  text: '#f3f4f6',
+  muted: '#9ca3af',
+  border: '#2d3748',
   success: '#34d399',
   warning: '#fbbf24',
+  error: '#f87171',
+  accent: '#b494d9',
   gradientStart: '#1f4fb8',
   gradientEnd: '#0f223f',
-  chipBg: '#152640',
-  heroBg: '#102640',
+  chipBg: '#1a2b42',
+  heroBg: '#142847',
 };
 
 export function createBrand(mode) {

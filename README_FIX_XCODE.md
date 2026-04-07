@@ -1,0 +1,1 @@
+To fix Xcode build destination error install the iOS 26.4 SDK via Xcode > Settings > Components, or update Xcode to include iOS 26.4 platform. Then rebuild or open workspace in Xcode and run on device.

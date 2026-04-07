@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Animated, Easing, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+ import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -31,38 +31,6 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [modules, setModules] = useState([]);
   const [appContent, setAppContent] = useState(initialContent);
-  const introProgress = useRef(new Animated.Value(0)).current;
-  const logoPulse = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(introProgress, {
-      toValue: 1,
-      duration: 480,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
-    }).start();
-  }, [introProgress]);
-
-  useEffect(() => {
-    const loop = Animated.loop(
-      Animated.sequence([
-        Animated.timing(logoPulse, {
-          toValue: 1,
-          duration: 900,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(logoPulse, {
-          toValue: 0,
-          duration: 900,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    );
-    loop.start();
-    return () => loop.stop();
-  }, [logoPulse]);
 
   const loadData = useCallback(async () => {
     try {
@@ -103,22 +71,7 @@ export default function HomeScreen({ navigation }) {
         columnWrapperStyle={styles.column}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
-          <Animated.View
-            style={[
-              styles.introSection,
-              {
-                opacity: introProgress,
-                transform: [
-                  {
-                    translateY: introProgress.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [20, 0],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
+          <View style={styles.introSection}>
             <LinearGradient
               colors={[theme.colors.heroBg, '#d2f2ff']}
               start={{ x: 0, y: 0 }}
@@ -127,23 +80,7 @@ export default function HomeScreen({ navigation }) {
             >
               <View style={styles.welcomeGrid}>
                 <View style={styles.welcomeIconColumn}>
-                  <Animated.View
-                    style={{
-                      transform: [
-                        {
-                          translateX: -6,
-                        },
-                        {
-                          scale: logoPulse.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [1, 1.18],
-                          }),
-                        },
-                      ],
-                    }}
-                  >
-                    <Ionicons name="logo-react" size={66} color={theme.colors.primary} />
-                  </Animated.View>
+                  <Ionicons name="logo-react" size={66} color={theme.colors.primary} />
                 </View>
                 <View style={styles.welcomeTextColumn}>
                   <Text style={[styles.welcomeTitle, { color: theme.colors.primaryDeep }]} numberOfLines={1}>
@@ -189,7 +126,7 @@ export default function HomeScreen({ navigation }) {
                 <Text style={[styles.viewAll, { color: theme.colors.primary }]}>View all</Text>
               </Pressable>
             </View>
-          </Animated.View>
+          </View>
         }
         renderItem={({ item }) => (
           <Pressable

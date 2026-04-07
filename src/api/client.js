@@ -3,21 +3,31 @@ const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_URL ||
   'https://api.masterreactnative.dev';
 
+const REQUEST_TIMEOUT = 30000; // 30 seconds
+
 async function request(path, options = {}) {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    ...options,
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...options,
+      signal: controller.signal,
+    });
 
-  const json = await response.json();
+    const json = await response.json();
 
-  if (!response.ok) {
-    throw new Error(json?.message || 'Request failed');
+    if (!response.ok) {
+      throw new Error(json?.message || 'Request failed');
+    }
+
+    return json.data;
+  } finally {
+    clearTimeout(timeout);
   }
-
-  return json.data;
 }
 
 export function getModules() {

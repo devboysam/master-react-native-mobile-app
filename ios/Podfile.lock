@@ -36,7 +36,7 @@ PODS:
     - ExpoModulesCore
   - ExpoKeepAwake (55.0.4):
     - ExpoModulesCore
-  - ExpoLinearGradient (55.0.8):
+  - ExpoLinearGradient (55.0.9):
     - ExpoModulesCore
   - ExpoLogBox (55.0.7):
     - React-Core
@@ -2270,7 +2270,7 @@ SPEC CHECKSUMS:
   ExpoFileSystem: e1a42d7f69f7faae33f4d7d01708f7861f7bd757
   ExpoFont: 1aa465cf9f8ac6b670405becba8b15473581b2dd
   ExpoKeepAwake: 7f3b28c361c37389b18841bb52a58003b39fcb33
-  ExpoLinearGradient: 499856f296f83c05279d18447bdb57ab0e06d294
+  ExpoLinearGradient: 2e52067758a25f9b51e3fc3f4077851c0756c81c
   ExpoLogBox: 89b634d5a8a64c4a6a7caad8f9985a28463c7002
   ExpoModulesCore: d3cc76390a012b1027b08e1c38d0a8cdb6978531
   ExpoModulesJSI: a554588f3260ee3c44a3e7f4a8151c2b9ffdb024
