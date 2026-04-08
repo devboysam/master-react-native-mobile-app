@@ -108,7 +108,7 @@ export default function LessonsScreen({ route, navigation }) {
         ListHeaderComponent={
           <>
             <View style={styles.backRow}>
-              <Pressable style={styles.backBtn} onPress={handleBackToModules}>
+              <Pressable style={[styles.backBtn, { backgroundColor: theme.colors.chipBg }]} onPress={handleBackToModules}>
                 <Ionicons name="chevron-back" size={18} color={theme.colors.primaryDeep} />
                 <Text style={[styles.backLabel, { color: theme.colors.primaryDeep }]}>Back</Text>
               </Pressable>
@@ -116,35 +116,35 @@ export default function LessonsScreen({ route, navigation }) {
 
             <View style={[styles.headerWrap, { borderColor: theme.colors.border }] }>
               <LinearGradient
-                colors={['#EAF2FF', '#F5FAFF']}
+                colors={[theme.colors.heroBg, theme.colors.chipBg]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.headerGradient}
               >
-                <Text style={styles.headerEyebrow}>Module Overview</Text>
+                <Text style={[styles.headerEyebrow, { color: theme.colors.muted }]}>Module Overview</Text>
                 <View style={styles.titleRow}>
-                  <Text style={[styles.title, { color: '#1f2d4d' }]}>{moduleItem?.title || 'Module Details'}</Text>
+                  <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{moduleItem?.title || 'Module Details'}</Text>
                   <Ionicons
                     name={isModuleCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
                     size={22}
-                    color={isModuleCompleted ? '#0f9d58' : '#8aa3c7'}
+                    color={isModuleCompleted ? theme.colors.success : theme.colors.muted}
                     style={styles.titleStatusIcon}
                   />
                 </View>
-                <Text style={styles.subtitle}>{moduleItem?.description || 'Module overview and lessons'}</Text>
+                <Text style={[styles.subtitle, { color: theme.colors.muted }]}>{moduleItem?.description || 'Module overview and lessons'}</Text>
               </LinearGradient>
             </View>
 
             {prerequisites.length ? (
               <>
                 <View style={styles.prereqHead}>
-                  <Ionicons name="sparkles-outline" size={15} color="#C76F00" />
-                  <Text style={[styles.sectionTitle, styles.prereqTitle, { color: '#7A3F00' }]}>Prerequisites</Text>
+                  <Ionicons name="sparkles-outline" size={15} color={theme.colors.accent} />
+                  <Text style={[styles.sectionTitle, styles.prereqTitle, { color: theme.colors.accent }]}>Prerequisites</Text>
                 </View>
                 <View style={styles.prereqWrap}>
                   {prerequisites.map((item) => (
-                    <View key={item} style={styles.bubble}>
-                      <Text style={styles.bubbleText}>{item}</Text>
+                    <View key={item} style={[styles.bubble, { backgroundColor: theme.colors.accentSoft, borderColor: theme.colors.accent }]}>
+                      <Text style={[styles.bubbleText, { color: theme.colors.accent }]}>{item}</Text>
                     </View>
                   ))}
                 </View>
@@ -159,10 +159,14 @@ export default function LessonsScreen({ route, navigation }) {
         }
         renderItem={({ item }) => (
           <Pressable
-            style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
+            style={({ pressed }) => [
+              styles.row,
+              { backgroundColor: theme.colors.card, borderColor: theme.colors.border },
+              pressed && styles.rowPressed,
+            ]}
             onPress={() => navigation.push('LessonReader', { lessonId: item.id })}
           >
-            <View style={styles.lessonIconWrap}>
+            <View style={[styles.lessonIconWrap, { backgroundColor: theme.colors.chipBg }]}>
               <Ionicons name="document-text-outline" size={18} color={theme.colors.primary} />
             </View>
             <View style={styles.rowBody}>
@@ -177,7 +181,11 @@ export default function LessonsScreen({ route, navigation }) {
               <Pressable
                 hitSlop={8}
                 onPress={() => handleToggleBookmark(item.id)}
-                style={({ pressed }) => [styles.bookmarkMini, pressed && styles.bookmarkMiniPressed]}
+                style={({ pressed }) => [
+                  styles.bookmarkMini,
+                  { borderColor: theme.colors.border, backgroundColor: theme.colors.chipBg },
+                  pressed && styles.bookmarkMiniPressed,
+                ]}
               >
                 <Ionicons
                   name={bookmarkSet.has(Number(item.id)) ? 'bookmark' : 'bookmark-outline'}
@@ -188,7 +196,7 @@ export default function LessonsScreen({ route, navigation }) {
               <Ionicons
                 name={completedSet.has(Number(item.id)) ? 'checkmark-circle' : 'checkmark-circle-outline'}
                 size={18}
-                color={completedSet.has(Number(item.id)) ? '#1e9e53' : '#b0bfdc'}
+                color={completedSet.has(Number(item.id)) ? theme.colors.success : theme.colors.muted}
               />
             </View>
           </Pressable>
@@ -222,7 +230,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 7,
     borderRadius: 999,
-    backgroundColor: '#eaf2ff',
+    backgroundColor: 'transparent',
   },
   backLabel: {
     fontFamily: FONT.bold,
@@ -231,7 +239,7 @@ const styles = StyleSheet.create({
     borderRadius: brand.radius.md,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: '#d4e2fb',
+    borderColor: 'transparent',
     overflow: 'hidden',
   },
   headerGradient: {
@@ -241,7 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONT.bold,
     letterSpacing: 0.4,
-    color: '#5f78a8',
+    color: brand.colors.muted,
     textTransform: 'uppercase',
     marginBottom: 6,
   },
@@ -263,7 +271,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   subtitle: {
-    color: '#556482',
+    color: brand.colors.muted,
     fontFamily: FONT.regular,
   },
   sectionTitle: {
@@ -300,16 +308,16 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   bubble: {
-    backgroundColor: '#FFF2DB',
+    backgroundColor: '#fff2db',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: '#FFD9A3',
+    borderColor: '#ffd9a3',
     maxWidth: '100%',
   },
   bubbleText: {
-    color: '#7A3F00',
+    color: '#7a3f00',
     fontFamily: FONT.semi,
   },
   row: {

@@ -3,8 +3,12 @@ import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-nativ
 import { useFocusEffect } from '@react-navigation/native';
 import { getLessonsByModule, getModules } from '../api/client';
 import { getCompletedLessonIds } from '../storage/learningState';
+import AppScreen from '../components/AppScreen';
+import { brand, softShadows } from '../theme/brand';
+import { useAppTheme } from '../theme/ThemeContext';
 
 export default function ProgressScreen() {
+  const { theme } = useAppTheme();
   const [loading, setLoading] = useState(true);
   const [modules, setModules] = useState([]);
   const [allLessons, setAllLessons] = useState([]);
@@ -59,19 +63,19 @@ export default function ProgressScreen() {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#0f766e" />
-      </View>
+      <AppScreen style={styles.centered}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      </AppScreen>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Progress</Text>
+    <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
+      <Text style={[styles.title, { color: theme.colors.text }]}>Progress</Text>
 
-      <View style={styles.kpiCard}>
-        <Text style={styles.kpiText}>Lessons: {completedLessons}/{totalLessons}</Text>
-        <Text style={styles.kpiText}>Minutes: {completedMinutes}/{totalMinutes}</Text>
+      <View style={[styles.kpiCard, { borderColor: theme.colors.border }] }>
+        <Text style={[styles.kpiText, { color: '#ffffff' }]}>Lessons: {completedLessons}/{totalLessons}</Text>
+        <Text style={[styles.kpiText, { color: '#ffffff' }]}>Minutes: {completedMinutes}/{totalMinutes}</Text>
       </View>
 
       <FlatList
@@ -79,29 +83,28 @@ export default function ProgressScreen() {
         keyExtractor={(item) => String(item.id)}
         contentContainerStyle={{ paddingBottom: 120 }}
         renderItem={({ item }) => (
-          <View style={styles.row}>
+          <View style={[styles.row, { backgroundColor: theme.colors.card, borderColor: theme.colors.border }] }>
             <View style={styles.rowHead}>
-              <Text style={styles.moduleTitle}>{item.title}</Text>
-              <Text style={styles.percent}>{item.percent}%</Text>
+              <Text style={[styles.moduleTitle, { color: theme.colors.text }]}>{item.title}</Text>
+              <Text style={[styles.percent, { color: theme.colors.primaryDeep }]}>{item.percent}%</Text>
             </View>
-            <View style={styles.barTrack}>
-              <View style={[styles.barFill, { width: `${item.percent}%` }]} />
+            <View style={[styles.barTrack, { backgroundColor: theme.colors.chipBg }]}>
+              <View style={[styles.barFill, { width: `${item.percent}%`, backgroundColor: theme.colors.primary }]} />
             </View>
-            <Text style={styles.text}>{item.done}/{item.total} lessons completed</Text>
+            <Text style={[styles.text, { color: theme.colors.muted }]}>{item.done}/{item.total} lessons completed</Text>
           </View>
         )}
-        ListEmptyComponent={<Text style={styles.text}>No module progress yet.</Text>}
+        ListEmptyComponent={<Text style={[styles.text, { color: theme.colors.muted }]}>No module progress yet.</Text>}
       />
-    </View>
+    </AppScreen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f3f8',
     padding: 16,
-    paddingTop: 18,
+    paddingTop: 10,
   },
   centered: {
     flex: 1,
@@ -109,27 +112,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 26,
-    fontWeight: '700',
-    color: '#0f172a',
+    fontSize: brand.type.h2,
+    fontWeight: '800',
     marginBottom: 10,
   },
   kpiCard: {
-    backgroundColor: '#dbeafe',
+    backgroundColor: '#0d2754',
     borderRadius: 14,
     padding: 12,
     marginBottom: 12,
+    borderWidth: 1,
+    ...softShadows,
   },
   kpiText: {
-    color: '#1e3a8a',
     fontWeight: '700',
     marginBottom: 4,
   },
   row: {
-    backgroundColor: '#ece9f0',
+    backgroundColor: '#ffffff',
     borderRadius: 14,
     padding: 12,
     marginBottom: 10,
+    borderWidth: 1,
+    ...softShadows,
   },
   rowHead: {
     flexDirection: 'row',
@@ -138,12 +143,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   moduleTitle: {
-    color: '#1b1e31',
     fontWeight: '700',
     fontSize: 16,
   },
   percent: {
-    color: '#334155',
     fontWeight: '700',
   },
   barTrack: {
@@ -159,7 +162,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   text: {
-    color: '#64748b',
     fontSize: 14,
   },
 });

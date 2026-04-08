@@ -16,9 +16,7 @@ const FONT = {
 function moduleIcon(icon) {
   if (icon === '?') {
     return '📚';
-  }
-
-  const iconMap = {
+  }  const iconMap = {
     book: '📘',
     code: '💻',
     design: '🎨',
@@ -27,8 +25,12 @@ function moduleIcon(icon) {
     project: '🛠️',
   };
 
+
   return iconMap[icon] || '📁';
 }
+
+
+
 
 export default function ModulesScreen({ navigation }) {
   const { theme } = useAppTheme();
@@ -67,7 +69,7 @@ export default function ModulesScreen({ navigation }) {
     <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
       <Text style={[styles.title, { color: theme.colors.text }]}>All Modules</Text>
       <Text style={[styles.subtitle, { color: theme.colors.muted }]}>Pick a module to explore lessons</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? <Text style={[styles.error, { color: theme.colors.accent }]}>{error}</Text> : null}
       <FlatList
         data={modules}
         keyExtractor={(item) => String(item.id)}
@@ -81,7 +83,7 @@ export default function ModulesScreen({ navigation }) {
               <View
                 style={[
                   styles.iconContainer,
-                  { backgroundColor: getModuleBackgroundColor(item) || '#EAF2FF' },
+                  { backgroundColor: getModuleBackgroundColor(item) || theme.colors.heroBg },
                 ]}
               >
               {getModuleImage(item) ? (

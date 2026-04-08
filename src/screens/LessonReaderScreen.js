@@ -93,8 +93,8 @@ export default function LessonReaderScreen({ route, navigation }) {
         color: theme.colors.text,
       },
       pre: {
-        backgroundColor: '#1f2937',
-        color: '#d7e0ff',
+        backgroundColor: theme.mode === 'dark' ? '#08152c' : '#0f1f42',
+        color: '#d8f3ff',
         borderRadius: 14,
         padding: 14,
         marginTop: 8,
@@ -105,7 +105,7 @@ export default function LessonReaderScreen({ route, navigation }) {
         fontFamily: 'Courier New',
         fontSize: 14,
         lineHeight: 22,
-        color: '#9ad1ff',
+        color: theme.colors.primarySoft,
       },
       ul: {
         marginTop: 0,
@@ -115,17 +115,17 @@ export default function LessonReaderScreen({ route, navigation }) {
         marginBottom: 8,
       },
     }),
-    [theme.colors.primaryDeep, theme.colors.text]
+    [theme.colors.primaryDeep, theme.colors.primarySoft, theme.colors.text, theme.mode]
   );
 
   const classesStyles = useMemo(
     () => ({
-      tokKey: { color: '#f59e0b', fontWeight: '700' },
-      tokFn: { color: '#22d3ee' },
-      tokStr: { color: '#86efac' },
-      tokType: { color: '#c4b5fd' },
+      tokKey: { color: theme.colors.accent, fontWeight: '700' },
+      tokFn: { color: theme.colors.primary },
+      tokStr: { color: '#6ee7b7' },
+      tokType: { color: '#a9b8ff' },
     }),
-    []
+    [theme.colors.accent, theme.colors.primary]
   );
 
   async function toggleBookmark() {
@@ -158,16 +158,28 @@ export default function LessonReaderScreen({ route, navigation }) {
     <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
       <ScrollView contentContainerStyle={{ paddingBottom: 124 }} showsVerticalScrollIndicator={false}>
         <View style={styles.topBarRow}>
-          <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>
+          <Pressable style={[styles.backBtn, { backgroundColor: theme.colors.chipBg }]} onPress={() => navigation.goBack()}>
             <Ionicons name="chevron-back" size={18} color={theme.colors.primaryDeep} />
             <Text style={[styles.backLabel, { color: theme.colors.primaryDeep }]}>Back</Text>
           </Pressable>
           <View style={styles.topActionsRow}>
-            <Pressable style={[styles.chip, styles.saveChip]} onPress={toggleBookmark}>
-              <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color="#1f3f88" />
+            <Pressable style={[styles.chip, styles.saveChip, { backgroundColor: theme.colors.chipBg, borderColor: theme.colors.border }]} onPress={toggleBookmark}>
+              <Ionicons name={isBookmarked ? 'bookmark' : 'bookmark-outline'} size={15} color={theme.colors.primaryDeep} />
             </Pressable>
-            <Pressable style={[styles.chip, isCompleted ? styles.completedChip : styles.pendingChip]} onPress={completeLesson}>
-              <Ionicons name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'} size={15} color={isCompleted ? '#0f7a3c' : '#1f3f88'} />
+            <Pressable
+              style={[
+                styles.chip,
+                isCompleted
+                  ? [styles.completedChip, { backgroundColor: theme.mode === 'dark' ? '#193528' : '#dff8ea', borderColor: theme.colors.success }]
+                  : [styles.pendingChip, { backgroundColor: theme.colors.chipBg, borderColor: theme.colors.border }],
+              ]}
+              onPress={completeLesson}
+            >
+              <Ionicons
+                name={isCompleted ? 'checkmark-circle' : 'checkmark-circle-outline'}
+                size={15}
+                color={isCompleted ? theme.colors.success : theme.colors.primaryDeep}
+              />
             </Pressable>
           </View>
         </View>
@@ -176,7 +188,7 @@ export default function LessonReaderScreen({ route, navigation }) {
           <Text style={[styles.title, { color: theme.colors.primaryDeep }]}>{lesson.title}</Text>
           <View style={styles.metaInline}>
             <Ionicons name="time-outline" size={14} color={theme.colors.muted} />
-            <Text style={[styles.meta, { color: theme.colors.muted }]}>Estimated read time: {lesson.read_time} min</Text>
+            <Text style={[styles.meta, { color: theme.colors.muted }]}>Estimated read time: {lesson.read_time ?? '-'} min</Text>
           </View>
         </View>
 
@@ -236,12 +248,13 @@ function highlightHtmlCodeBlocks(html) {
 
 function highlightCodeTokens(codeHtml) {
   let output = String(codeHtml);
-  output = output.replace(/\b(import|export|default|const|let|var|return|function|from)\b/g, '<span class="tokKey" style="color:#f59e0b;font-weight:700;">$1</span>');
-  output = output.replace(/\b(React|View|Text|ScrollView|FlatList)\b/g, '<span class="tokType" style="color:#c4b5fd;">$1</span>');
-  output = output.replace(/'([^']*)'/g, "'<span class=\"tokStr\" style=\"color:#86efac;\">$1</span>'");
-  output = output.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g, '<span class="tokFn" style="color:#22d3ee;">$1</span>(');
+  output = output.replace(/\b(import|export|default|const|let|var|return|function|from)\b/g, '<span class="tokKey">$1</span>');
+  output = output.replace(/\b(React|View|Text|ScrollView|FlatList)\b/g, '<span class="tokType">$1</span>');
+  output = output.replace(/'([^']*)'/g, "'<span class=\"tokStr\">$1</span>'");
+  output = output.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\s*\(/g, '<span class="tokFn">$1</span>(');
   return output;
 }
+
 
 function escapeHtml(input) {
   return input
@@ -284,17 +297,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 7,
     borderRadius: 999,
-    backgroundColor: '#eaf2ff',
+    backgroundColor: 'transparent',
   },
   backLabel: {
     fontWeight: '600',
   },
   headerCard: {
-    backgroundColor: '#eaf2ff',
+    backgroundColor: 'transparent',
     borderRadius: brand.radius.md,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#d4e2fb',
+    borderColor: 'transparent',
     marginBottom: 10,
   },
   title: {
@@ -315,16 +328,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   saveChip: {
-    backgroundColor: '#dbe8ff',
-    borderColor: '#b7cdfa',
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
   },
   pendingChip: {
-    backgroundColor: '#dbe8ff',
-    borderColor: '#b7cdfa',
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
   },
   completedChip: {
-    backgroundColor: '#dcf7e8',
-    borderColor: '#9bd8b8',
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
   },
   meta: {
     fontSize: 13,
@@ -336,7 +349,7 @@ const styles = StyleSheet.create({
   },
   readerCard: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: brand.colors.card,
     borderRadius: brand.radius.md,
     padding: 14,
     borderWidth: 1,

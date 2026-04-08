@@ -69,7 +69,7 @@ export default function ReadLaterScreen({ navigation }) {
     <AppScreen style={[styles.container, { backgroundColor: theme.colors.bg }] }>
       <Text style={[styles.title, { color: theme.colors.text }]}>Read Later</Text>
       <Text style={[styles.subtitle, { color: theme.colors.muted }]}>{bookmarkedLessons.length} saved lessons • {totalMinutes} min</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {error ? <Text style={[styles.error, { color: theme.colors.accent }]}>{error}</Text> : null}
 
       <FlatList
         data={bookmarkedLessons}
@@ -83,7 +83,7 @@ export default function ReadLaterScreen({ navigation }) {
             }
           >
             <View style={styles.rowInner}>
-              <View style={styles.iconWrap}>
+              <View style={[styles.iconWrap, { backgroundColor: theme.colors.chipBg }]}>
                 <Ionicons name="logo-react" size={18} color={theme.colors.primary} />
               </View>
               <View style={styles.rowBody}>

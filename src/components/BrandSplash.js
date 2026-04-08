@@ -17,11 +17,14 @@ export default function BrandSplash() {
 
   return (
     <LinearGradient
-      colors={['#0d1b2a', '#163d5e', '#2b8abf', '#61dafb']}
+      colors={['#040d20', '#0a2350', '#15477e', '#2fcaf4']}
       style={styles.container}
-      start={{ x: 0.1, y: 0 }}
-      end={{ x: 0.6, y: 1 }}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
     >
+      <View style={styles.glowOne} />
+      <View style={styles.glowTwo} />
+
       <Animated.View
         style={[
           styles.content,
@@ -44,11 +47,16 @@ export default function BrandSplash() {
           },
         ]}
       >
-        <View style={styles.logoWrap}>
-          <Ionicons name="logo-react" size={56} color="#ffffff" />
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>* PRO COURSE *</Text>
         </View>
-        <Text style={styles.title}>Master React Native</Text>
-        <Text style={styles.subtitle}>This React Native course app helps you practice daily and master mobile development.</Text>
+
+        <View style={styles.logoWrap}>
+          <Ionicons name="logo-react" size={72} color="#4ddcff" />
+        </View>
+
+        <Text style={styles.title}>MASTER</Text>
+        <Text style={styles.subtitle}>REACT NATIVE</Text>
       </Animated.View>
     </LinearGradient>
   );
@@ -59,35 +67,85 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 32,
+    padding: 30,
+  },
+  glowOne: {
+    position: 'absolute',
+    top: '18%',
+    left: '14%',
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: 'rgba(67,216,255,0.22)',
+  },
+  glowTwo: {
+    position: 'absolute',
+    bottom: '14%',
+    right: '10%',
+    width: 210,
+    height: 210,
+    borderRadius: 105,
+    backgroundColor: 'rgba(255,143,61,0.16)',
   },
   content: {
     alignItems: 'center',
-    maxWidth: 320,
+    width: '100%',
+    maxWidth: 340,
   },
-  logoWrap: {
-    width: 104,
-    height: 104,
-    borderRadius: 52,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 28,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    borderWidth: 1.5,
-    borderColor: 'rgba(255,255,255,0.25)',
+  badge: {
+    marginBottom: 22,
+    borderRadius: 999,
+    backgroundColor: '#ff8f3d',
+    paddingHorizontal: 20,
+    paddingVertical: 9,
+    borderWidth: 1,
+    borderColor: '#ffb77f',
+    shadowColor: '#ff8f3d',
+    shadowOpacity: 0.48,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 12,
+    elevation: 6,
   },
-  title: {
-    fontSize: 24,
-    lineHeight: 32,
-    fontWeight: '700',
-    textAlign: 'center',
+  badgeText: {
+    fontSize: 14,
+    letterSpacing: 2.2,
+    fontWeight: '800',
     color: '#ffffff',
   },
-  subtitle: {
-    marginTop: 12,
-    fontSize: 15,
-    lineHeight: 22,
+  logoWrap: {
+    width: 144,
+    height: 144,
+    borderRadius: 72,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+    backgroundColor: 'rgba(8, 30, 62, 0.74)',
+    borderWidth: 1,
+    borderColor: 'rgba(77, 220, 255, 0.38)',
+    shadowColor: '#31d0f7',
+    shadowOpacity: 0.46,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 18,
+    elevation: 8,
+  },
+  title: {
+    fontSize: 48,
+    lineHeight: 52,
+    fontWeight: '800',
+    letterSpacing: 7,
     textAlign: 'center',
-    color: 'rgba(255,255,255,0.72)',
+    color: '#ffffff',
+    textShadowColor: 'rgba(255,255,255,0.48)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 12,
+  },
+  subtitle: {
+    marginTop: 10,
+    fontSize: 18,
+    lineHeight: 24,
+    letterSpacing: 5,
+    fontWeight: '700',
+    textAlign: 'center',
+    color: '#54dbff',
   },
 });

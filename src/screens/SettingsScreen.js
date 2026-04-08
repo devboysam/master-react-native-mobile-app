@@ -83,12 +83,12 @@ export default function SettingsScreen() {
                   style={[
                     styles.segment,
                     {
-                      backgroundColor: active ? theme.colors.primary : theme.colors.chipBg,
+                      backgroundColor: active ? theme.colors.primaryDeep : theme.colors.chipBg,
                       borderColor: theme.colors.border,
                     },
                   ]}
                 >
-                  <Text style={[styles.segmentText, { color: active ? '#ffffff' : theme.colors.primaryDeep }]}>
+                  <Text style={[styles.segmentText, { color: active ? '#ffffff' : theme.colors.text }]}>
                     {item.charAt(0).toUpperCase() + item.slice(1)}
                   </Text>
                 </Pressable>
